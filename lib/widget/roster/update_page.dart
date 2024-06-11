@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Roster.dart';
-
+import 'package:flutter_application_1/service/roster_service.dart';
 
 class UpdatePage extends StatefulWidget {
-  final Business service;
+  final RosterService service;
   final int shiftIndex;
 
-  const UpdatePage({super.key, required this.service, required this.shiftIndex});
+  const UpdatePage(
+      {super.key, required this.service, required this.shiftIndex});
 
   @override
   State<UpdatePage> createState() => _UpdatePageState();
@@ -40,8 +40,8 @@ class _UpdatePageState extends State<UpdatePage> {
           TextField(
             controller: nameController,
             decoration: InputDecoration(
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15)),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
                 labelText: "Enter name",
                 prefixIcon: Icon(Icons.person)),
           ),
@@ -52,8 +52,8 @@ class _UpdatePageState extends State<UpdatePage> {
             controller: dateController,
             decoration: InputDecoration(
                 prefixIcon: Icon(Icons.date_range),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15)),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
                 labelText: 'Date (YYYY-MM-DD)'),
             keyboardType: TextInputType.datetime,
           ),
@@ -81,8 +81,8 @@ class _UpdatePageState extends State<UpdatePage> {
                 widget.service.shifts[widget.shiftIndex].date = newDate;
                 widget.service.shifts[widget.shiftIndex].time = newTime;
 
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text("Shift updated successfully!")));
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Shift updated successfully!")));
                 Navigator.pop(context);
               },
               child: Text("Update"),

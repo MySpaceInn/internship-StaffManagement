@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Roster.dart';
-import 'package:flutter_application_1/updatePage.dart';
-
+import 'package:flutter_application_1/service/roster_service.dart';
+import 'package:flutter_application_1/widget/roster/update_page.dart';
 
 class Update extends StatefulWidget {
-  final Business service;
+  final RosterService service;
 
   const Update({super.key, required this.service});
 
@@ -33,8 +32,8 @@ class _UpdateState extends State<Update> {
           TextField(
             controller: shiftNumberController,
             decoration: InputDecoration(
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15)),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
               labelText: "Enter Shift Number",
             ),
             keyboardType: TextInputType.number,
@@ -56,9 +55,9 @@ class _UpdateState extends State<Update> {
                                 shiftIndex: shiftIndex - 1,
                               )));
                 } else {
-                
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text("Invalid shift number or shift is deleted")));
+                      content:
+                          Text("Invalid shift number or shift is deleted")));
                 }
               },
               child: Text("Submit"),

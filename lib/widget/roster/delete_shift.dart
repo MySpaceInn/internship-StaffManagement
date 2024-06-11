@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_application_1/Roster.dart';
-
+import 'package:flutter_application_1/service/roster_service.dart';
 
 class delete extends StatefulWidget {
-  final Business service;
+  final RosterService service;
 
   const delete({super.key, required this.service});
 
@@ -19,15 +18,15 @@ class _DeleteState extends State<delete> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text(
+        title: Text(
           "Delete",
           style: TextStyle(fontSize: 25),
         ),
-        backgroundColor:  Color.fromARGB(255, 149, 218, 228),
+        backgroundColor: Color.fromARGB(255, 149, 218, 228),
       ),
       body: Column(
         children: [
-           SizedBox(
+          SizedBox(
             height: 20,
           ),
           TextField(
@@ -64,9 +63,9 @@ class _DeleteState extends State<delete> {
               child: Text("Delete"),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.black,
-                backgroundColor: Colors.cyan, 
+                backgroundColor: Colors.cyan,
                 shadowColor: Colors.black,
-                elevation: 5, 
+                elevation: 5,
                 padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 textStyle: TextStyle(fontSize: 20),
               ))

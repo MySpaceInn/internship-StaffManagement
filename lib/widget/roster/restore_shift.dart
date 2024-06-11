@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Roster.dart';
+import 'package:flutter_application_1/service/roster_service.dart';
 
 class Restore extends StatefulWidget {
   const Restore({super.key, required this.service});
-  final Business service;
+  final RosterService service;
 
   @override
   State<Restore> createState() => _RestoreState();
@@ -43,7 +43,8 @@ class _RestoreState extends State<Restore> {
             TextField(
               controller: _controller,
               decoration: InputDecoration(
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
                 labelText: "Enter ID",
               ),
               keyboardType: TextInputType.number,
@@ -53,8 +54,8 @@ class _RestoreState extends State<Restore> {
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.black,
                 backgroundColor: Colors.cyanAccent,
-                shadowColor: Colors.black, 
-                elevation: 5, 
+                shadowColor: Colors.black,
+                elevation: 5,
                 padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 textStyle: TextStyle(fontSize: 20),
               ),

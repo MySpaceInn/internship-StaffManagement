@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'Roster.dart';
+import 'package:flutter_application_1/service/roster_service.dart';
 
 class Create extends StatefulWidget {
   Create({super.key, required this.service});
-  final Business service;
+  final RosterService service;
 
   @override
   State<Create> createState() => _CreateState();
@@ -21,7 +21,7 @@ class _CreateState extends State<Create> {
 
     if (name.isNotEmpty && date.isNotEmpty && time.isNotEmpty) {
       widget.service.createShiftWithParameters(name, date, time);
-      
+
       Navigator.pop(context);
       showDialog(
         context: context,
@@ -37,7 +37,6 @@ class _CreateState extends State<Create> {
         ),
       );
     } else {
-      
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -68,7 +67,8 @@ class _CreateState extends State<Create> {
             TextField(
               controller: nameController,
               decoration: InputDecoration(
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
                 labelText: "Enter name",
                 prefixIcon: Icon(Icons.person),
               ),
@@ -77,7 +77,8 @@ class _CreateState extends State<Create> {
             TextField(
               controller: dateController,
               decoration: InputDecoration(
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
                 prefixIcon: Icon(Icons.date_range),
                 labelText: 'Date (YYYY-MM-DD)',
               ),
@@ -89,7 +90,8 @@ class _CreateState extends State<Create> {
               decoration: InputDecoration(
                 labelText: 'Time (HH:MM)',
                 prefixIcon: Icon(Icons.timelapse),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
               ),
               keyboardType: TextInputType.datetime,
             ),
