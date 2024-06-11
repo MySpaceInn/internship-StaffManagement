@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/service/allowance_service.dart';
 import 'package:flutter_application_1/service/business_service.dart';
 import 'package:flutter_application_1/service/roster_service.dart';
 
 void main() {
-  runStaff();
+  //runRoster();
+  //runStaff();
+ runAllowance();
 }
 
 void runRoster() {
@@ -13,4 +16,10 @@ void runRoster() {
 
 void runStaff() {
   runApp(BusinessService().getAppMenu());
+}
+void runAllowance(){
+ AllowanceService allowance = AllowanceService();
+  
+   runApp(allowance.getAppMenu());
+
 }
