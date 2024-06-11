@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Roster.dart';
-
+import 'package:flutter_application_1/model/shift.dart';
 
 class ActiveShift extends StatelessWidget {
   const ActiveShift({super.key, required this.shifts});
@@ -8,8 +7,9 @@ class ActiveShift extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Shift> activeShifts = shifts.where((shift) => !shift.isDeleted).toList();
-    
+    List<Shift> activeShifts =
+        shifts.where((shift) => !shift.isDeleted).toList();
+
     return Scaffold(
       appBar: AppBar(title: Text('Active Shifts')),
       body: activeShifts.isEmpty

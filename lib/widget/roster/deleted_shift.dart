@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Roster.dart';
+import 'package:flutter_application_1/model/shift.dart';
 
 class Deletedshift extends StatelessWidget {
   const Deletedshift({super.key, required this.shifts});
@@ -22,7 +22,7 @@ class Deletedshift extends StatelessWidget {
                     subtitle: Text('Date: ${shift.date} at ${shift.time}'),
                   );
                 } else {
-                  return SizedBox.shrink(); 
+                  return SizedBox.shrink();
                 }
               }).toList(),
             ),
