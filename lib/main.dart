@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/service/business_service.dart';
-import 'package:flutter_application_1/service/roster_service.dart';
+import 'package:flutter_application_1/home_page.dart';
 
 void main() {
-  runStaff();
+  runHomePage();
 }
 
-void runRoster() {
-  RosterService roster = RosterService();
-  runApp(roster.getAppMenu());
-}
-
-void runStaff() {
-  runApp(BusinessService().getAppMenu());
+void runHomePage() {
+  GetHomePage homePage = GetHomePage();
+  runApp(homePage.getHomeUI());
 }

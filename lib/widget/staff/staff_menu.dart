@@ -39,6 +39,7 @@ class _StaffMenuState extends State<StaffMenu> {
       Staff? staff = staffList.firstWhere(
         (staff) => staff.tax == tax,
       );
+      // ignore: unnecessary_null_comparison
       if (staff != null) {
         staffList.remove(staff);
         removedStaffList.add(staff);
