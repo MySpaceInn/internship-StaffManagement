@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/service/allowance_service.dart';
+
 import 'package:flutter_application_1/home_page.dart';
 
 void main() {
+  //runRoster();
+  //runStaff();
+  ///runAllowance();
   runHomePage();
 }
 
 void runHomePage() {
   GetHomePage homePage = GetHomePage();
   runApp(homePage.getHomeUI());
+}
+
+void runAllowance() {
+  AllowanceService allowance = AllowanceService();
+
+  runApp(allowance.getAppMenu());
 }

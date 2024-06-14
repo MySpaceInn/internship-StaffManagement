@@ -7,14 +7,13 @@ import 'package:flutter_application_1/widget/roster/roster_menu.dart';
 class RosterService extends ChangeNotifier {
   List<Shift> shifts = [];
   ValueNotifier<List<Shift>> shiftsNotifier = ValueNotifier([]);
-
   getAppMenu() {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true),
-      home: Rostermenu(service: this),
+      home: RosterMenu(service: this),
     );
   }
 

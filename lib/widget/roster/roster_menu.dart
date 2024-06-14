@@ -6,9 +6,10 @@ import 'package:flutter_application_1/widget/roster/delete_shift.dart';
 import 'package:flutter_application_1/widget/roster/list_shift.dart';
 import 'package:flutter_application_1/widget/roster/restore_shift.dart';
 import 'package:flutter_application_1/widget/roster/update_shift.dart';
+import 'package:meta/meta.dart';
 
-class Rostermenu extends StatelessWidget {
-  const Rostermenu({super.key, required this.service});
+class RosterMenu extends StatelessWidget {
+  const RosterMenu({super.key, required this.service});
   final RosterService service;
 
   @override
@@ -89,7 +90,7 @@ class Rostermenu extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => delete(service: service)));
+                          builder: (context) => Delete(service: service)));
                 },
                 child: Text("4. Delete Shift")),
             SizedBox(height: 10),

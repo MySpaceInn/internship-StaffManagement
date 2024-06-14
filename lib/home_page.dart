@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/service/allowance_service.dart';
 import 'package:flutter_application_1/service/business_service.dart';
 import 'package:flutter_application_1/service/roster_service.dart';
 
@@ -69,21 +70,11 @@ class BottomNavigationBarExample extends StatefulWidget {
 class _BottomNavigationBarExampleState
     extends State<BottomNavigationBarExample> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
+
+  final List<Widget> _widgetOptions = <Widget>[
+    BusinessService().getAppMenu(),
+    Text('Roster'),
+    AllowanceService().getAppMenu(),
   ];
 
   void _onItemTapped(int index) {
@@ -110,13 +101,18 @@ class _BottomNavigationBarExampleState
             backgroundColor: Colors.red,
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.business),
+            label: 'Business',
+            backgroundColor: Colors.red,
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.list),
             label: 'Roster',
             backgroundColor: Colors.green,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.work),
-            label: 'Shift',
+            icon: Icon(Icons.money),
+            label: 'Allowance',
             backgroundColor: Colors.purple,
           ),
         ],

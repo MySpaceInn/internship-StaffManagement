@@ -7,8 +7,6 @@ class BusinessService {
   List<Staff> removedStaffList = [];
   static int _nextId = 100;
 
-  BusinessService();
-
   static int getNextId() {
     return _nextId++;
   }
