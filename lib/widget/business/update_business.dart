@@ -1,26 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/model/business.dart';
+import 'package:flutter_application_1/widget/business/update_business_detail.dart';
 
-import 'package:flutter_application_1/model/staff.dart';
-import 'package:flutter_application_1/widget/staff/delete_details.dart';
+class UpdateBusiness extends StatefulWidget {
+  final List<Business> businessList;
 
-class Deleteaccount extends StatefulWidget {
-  final List<Staff> staffList;
-  final Function(int) removeStaff;
-  final List<Staff> removedStaffList;
-
-  const Deleteaccount({
-    Key? key,
-    required this.staffList,
-    required this.removeStaff,
-    required this.removedStaffList,
-  }) : super(key: key);
+  const UpdateBusiness({Key? key, required this.businessList})
+      : super(key: key);
 
   @override
-  State<Deleteaccount> createState() => _DeleteaccountState();
+  State<UpdateBusiness> createState() => _UpdateBusinessState();
 }
 
-class _DeleteaccountState extends State<Deleteaccount> {
+class _UpdateBusinessState extends State<UpdateBusiness> {
   final _formKey = GlobalKey<FormState>();
   int? _id;
 
@@ -29,7 +21,7 @@ class _DeleteaccountState extends State<Deleteaccount> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Remove Account"),
+        title: Text("Update Business"),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10),
@@ -39,8 +31,8 @@ class _DeleteaccountState extends State<Deleteaccount> {
             children: [
               TextFormField(
                 decoration: InputDecoration(
+                  labelText: "Enter ID Number",
                   prefixIcon: Icon(Icons.attach_money),
-                  labelText: "Enter Registered TAX Number To Delete",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -48,7 +40,7 @@ class _DeleteaccountState extends State<Deleteaccount> {
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a ID number';
+                    return 'Please enter a ID Number';
                   }
                   if (int.tryParse(value) == null) {
                     return 'Please enter a valid number';
@@ -61,31 +53,34 @@ class _DeleteaccountState extends State<Deleteaccount> {
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.cyan),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.cyan,
+                  foregroundColor: Colors.black,
+                ),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     if (_id != null && _isidRegistered(_id!)) {
-                      widget.removeStaff(_id!);
-                      Navigator.pop(
+                      Business business = widget.businessList
+                          .firstWhere((business) => business.id == _id);
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DeleteStaffDetails(
-                            staffList: widget.removedStaffList,
+                          builder: (context) => UpdateOrganaization(
+                            business: business,
+                            updateBusiness: _updateBusiness,
                           ),
                         ),
                       );
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Deleted Successfully")));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Invalid tax number')),
+                        SnackBar(content: Text('Invalid id number')),
                       );
                     }
                   }
                 },
                 child: Text(
-                  "Delete",
+                  "Submit",
                   style: TextStyle(color: Colors.black),
                 ),
               ),
@@ -97,6 +92,16 @@ class _DeleteaccountState extends State<Deleteaccount> {
   }
 
   bool _isidRegistered(int id) {
-    return widget.staffList.any((staff) => staff.id == id);
+    return widget.businessList.any((business) => business.id == id);
+  }
+
+  void _updateBusiness(Business updatedBusiness) {
+    setState(() {
+      int index = widget.businessList
+          .indexWhere((business) => business.id == updatedBusiness.id);
+      if (index != -1) {
+        widget.businessList[index] = updatedBusiness;
+      }
+    });
   }
 }

@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/staff.dart';
+import 'package:flutter_application_1/model/business.dart';
 
-class RestoreAccount extends StatefulWidget {
-  final List<Staff> removedStaffList;
-  final List<Staff> staffList;
-  final void Function(Staff staff) restoreStaff;
+class RestoreBusiness extends StatefulWidget {
+  final List<Business> removedBusinessList;
+  final List<Business> businessList;
+  final void Function(Business business) restoreBusiness;
 
-  const RestoreAccount({
+  const RestoreBusiness({
     Key? key,
-    required this.removedStaffList,
-    required this.staffList,
-    required this.restoreStaff,
+    required this.removedBusinessList,
+    required this.businessList,
+    required this.restoreBusiness,
   }) : super(key: key);
 
   @override
-  State<RestoreAccount> createState() => _RestoreAccountState();
+  State<RestoreBusiness> createState() => _RestoreBusinessState();
 }
 
-class _RestoreAccountState extends State<RestoreAccount> {
+class _RestoreBusinessState extends State<RestoreBusiness> {
   final _formKey = GlobalKey<FormState>();
   int? _id;
 
@@ -26,7 +26,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Restore Details"),
+        title: Text("Restore Business"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -36,8 +36,8 @@ class _RestoreAccountState extends State<RestoreAccount> {
             children: [
               TextFormField(
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.attach_money),
-                  labelText: "Enter TAX Number To Restore",
+                  prefixIcon: Icon(Icons.numbers),
+                  labelText: "Enter ID Number To Restore",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -45,7 +45,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a ID number';
+                    return 'Please enter a id number';
                   }
                   if (int.tryParse(value) == null) {
                     return 'Please enter a valid number';
@@ -63,19 +63,19 @@ class _RestoreAccountState extends State<RestoreAccount> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     if (_id != null) {
-                      Staff? staff = _getStaffByid(_id!);
-                      if (staff != null) {
-                        widget.restoreStaff(staff);
+                      Business? business = _getBusinessByid(_id!);
+                      if (business != null) {
+                        widget.restoreBusiness(business);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                              content: Text('Staff restored successfully')),
+                              content: Text('Business restored successfully')),
                         );
                         Navigator.pop(context);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                              content:
-                                  Text('id number not found in removed staff')),
+                              content: Text(
+                                  'tax number not found in removed Business')),
                         );
                       }
                     }
@@ -93,9 +93,10 @@ class _RestoreAccountState extends State<RestoreAccount> {
     );
   }
 
-  Staff? _getStaffByid(int id) {
+  Business? _getBusinessByid(int id) {
     try {
-      return widget.removedStaffList.firstWhere((staff) => staff.id == id);
+      return widget.removedBusinessList
+          .firstWhere((business) => business.id == id);
     } catch (e) {
       return null;
     }

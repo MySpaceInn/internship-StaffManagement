@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/service/business_service.dart';
 import 'package:flutter_application_1/service/roster_service.dart';
+import 'package:flutter_application_1/service/staff_service.dart';
 
 void main() {
-  runStaff();
+  runBusiness();
 }
 
 void runRoster() {
@@ -12,5 +13,9 @@ void runRoster() {
 }
 
 void runStaff() {
+  runApp(StaffService().getAppMenu());
+}
+
+void runBusiness() {
   runApp(BusinessService().getAppMenu());
 }

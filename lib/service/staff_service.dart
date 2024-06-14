@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/business.dart';
-import 'package:flutter_application_1/widget/business/business_menu.dart';
+import 'package:flutter_application_1/model/staff.dart';
+import 'package:flutter_application_1/widget/staff/staff_menu.dart';
 
-class BusinessService {
-  List<Business> businessList = [];
-  List<Business> removedBusinessList = [];
-  static int _nextId = 10;
+class StaffService {
+  List<Staff> staffList = [];
+  List<Staff> removedStaffList = [];
+  static int _nextId = 100;
 
-  BusinessService();
+  StaffService();
 
   static int getNextId() {
     return _nextId++;
@@ -21,9 +21,14 @@ class BusinessService {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: BusinessMenu(
+      home: StaffMenu(
         service: this,
       ),
     );
   }
+}
+
+void main() {
+  StaffService service = StaffService();
+  runApp(service.getAppMenu());
 }

@@ -1,26 +1,24 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/model/business.dart';
+import 'package:flutter_application_1/widget/business/delete_business_detail.dart';
 
-import 'package:flutter_application_1/model/staff.dart';
-import 'package:flutter_application_1/widget/staff/delete_details.dart';
+class DeleteBusiness extends StatefulWidget {
+  final List<Business> businessList;
+  final Function(int) removeBusiness;
+  final List<Business> removedBusinessList;
 
-class Deleteaccount extends StatefulWidget {
-  final List<Staff> staffList;
-  final Function(int) removeStaff;
-  final List<Staff> removedStaffList;
-
-  const Deleteaccount({
+  const DeleteBusiness({
     Key? key,
-    required this.staffList,
-    required this.removeStaff,
-    required this.removedStaffList,
+    required this.businessList,
+    required this.removeBusiness,
+    required this.removedBusinessList,
   }) : super(key: key);
 
   @override
-  State<Deleteaccount> createState() => _DeleteaccountState();
+  State<DeleteBusiness> createState() => _DeleteBusinessState();
 }
 
-class _DeleteaccountState extends State<Deleteaccount> {
+class _DeleteBusinessState extends State<DeleteBusiness> {
   final _formKey = GlobalKey<FormState>();
   int? _id;
 
@@ -29,7 +27,7 @@ class _DeleteaccountState extends State<Deleteaccount> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Remove Account"),
+        title: Text("Remove Business"),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10),
@@ -39,8 +37,8 @@ class _DeleteaccountState extends State<Deleteaccount> {
             children: [
               TextFormField(
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.attach_money),
-                  labelText: "Enter Registered TAX Number To Delete",
+                  prefixIcon: Icon(Icons.numbers),
+                  labelText: "Enter Registered ID Number To Delete",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -48,7 +46,7 @@ class _DeleteaccountState extends State<Deleteaccount> {
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a ID number';
+                    return 'Please enter a id number';
                   }
                   if (int.tryParse(value) == null) {
                     return 'Please enter a valid number';
@@ -66,12 +64,12 @@ class _DeleteaccountState extends State<Deleteaccount> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     if (_id != null && _isidRegistered(_id!)) {
-                      widget.removeStaff(_id!);
+                      widget.removeBusiness(_id!);
                       Navigator.pop(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DeleteStaffDetails(
-                            staffList: widget.removedStaffList,
+                          builder: (context) => DeleteBusinessDetail(
+                            businessList: widget.removedBusinessList,
                           ),
                         ),
                       );
@@ -79,7 +77,7 @@ class _DeleteaccountState extends State<Deleteaccount> {
                           SnackBar(content: Text("Deleted Successfully")));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Invalid tax number')),
+                        SnackBar(content: Text('Invalid id number')),
                       );
                     }
                   }
@@ -97,6 +95,6 @@ class _DeleteaccountState extends State<Deleteaccount> {
   }
 
   bool _isidRegistered(int id) {
-    return widget.staffList.any((staff) => staff.id == id);
+    return widget.businessList.any((business) => business.id == id);
   }
 }

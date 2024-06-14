@@ -1,47 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/staff.dart';
+import 'package:flutter_application_1/model/business.dart';
+import 'package:flutter_application_1/service/business_service.dart';
 import 'package:flutter_application_1/service/staff_service.dart';
-import 'package:flutter_application_1/widget/staff/create_account.dart';
-import 'package:flutter_application_1/widget/staff/remove_account.dart';
-import 'package:flutter_application_1/widget/staff/restore_account.dart';
-import 'package:flutter_application_1/widget/staff/update_account.dart';
-import 'package:flutter_application_1/widget/staff/view_details.dart';
+import 'package:flutter_application_1/widget/business/create_business.dart';
+import 'package:flutter_application_1/widget/business/remove_business.dart';
+import 'package:flutter_application_1/widget/business/restore_business.dart';
+import 'package:flutter_application_1/widget/business/update_business.dart';
+import 'package:flutter_application_1/widget/business/view_business_detail.dart';
 
-class StaffMenu extends StatefulWidget {
-  final StaffService service;
+class BusinessMenu extends StatefulWidget {
+  final BusinessService service;
 
-  StaffMenu({Key? key, required this.service}) : super(key: key);
+  BusinessMenu({
+    Key? key,
+    required this.service,
+  }) : super(key: key);
 
   @override
-  _StaffMenuState createState() => _StaffMenuState();
+  _BusinessMenuState createState() => _BusinessMenuState();
 }
 
-class _StaffMenuState extends State<StaffMenu> {
-  List<Staff> staffList = [];
-  List<Staff> removedStaffList = [];
+class _BusinessMenuState extends State<BusinessMenu> {
+  List<Business> businessList = [];
+  List<Business> removedBusinessList = [];
 
   @override
   void initState() {
     super.initState();
-    staffList = widget.service.staffList;
-    removedStaffList = widget.service.removedStaffList;
+    businessList = widget.service.businessList;
+    removedBusinessList = widget.service.removedBusinessList;
   }
 
-  void addStaff(Staff staff) {
+  void addBusiness(Business business) {
     setState(() {
-      staffList.add(staff);
-      widget.service.staffList = staffList;
+      businessList.add(business);
+      widget.service.businessList = businessList;
     });
   }
 
-  void removeStaff(int tax) {
+  void removeBusiness(int id) {
     setState(() {
-      Staff? staff = staffList.firstWhere(
-        (staff) => staff.tax == tax,
+      Business? business = businessList.firstWhere(
+        (business) => business.id == id,
       );
-      if (staff != null) {
-        staffList.remove(staff);
-        removedStaffList.add(staff);
+      if (business != null) {
+        businessList.remove(business);
+        removedBusinessList.add(business);
       }
     });
   }
@@ -51,7 +55,7 @@ class _StaffMenuState extends State<StaffMenu> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Staff Management"),
+        title: Text("Business Management"),
       ),
       body: Center(
         child: Column(
@@ -63,9 +67,9 @@ class _StaffMenuState extends State<StaffMenu> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CreateAccount(
-                      staffList: widget.service.staffList,
-                      addStaff: addStaff,
+                    builder: (context) => CreateBusiness(
+                      BusinessList: widget.service.businessList,
+                      addBusiness: addBusiness,
                     ),
                   ),
                 );
@@ -78,7 +82,7 @@ class _StaffMenuState extends State<StaffMenu> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  "Create Account",
+                  "Create Business",
                   style: TextStyle(
                     color: Colors.black,
                   ),
@@ -90,8 +94,8 @@ class _StaffMenuState extends State<StaffMenu> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => UpdateAccount(
-                      staffList: widget.service.staffList,
+                    builder: (context) => UpdateBusiness(
+                      businessList: widget.service.businessList,
                     ),
                   ),
                 );
@@ -104,7 +108,7 @@ class _StaffMenuState extends State<StaffMenu> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  "Update Account",
+                  "Update Business",
                   style: TextStyle(
                     color: Colors.black,
                   ),
@@ -116,10 +120,10 @@ class _StaffMenuState extends State<StaffMenu> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Deleteaccount(
-                      staffList: widget.service.staffList,
-                      removeStaff: removeStaff,
-                      removedStaffList: widget.service.removedStaffList,
+                    builder: (context) => DeleteBusiness(
+                      businessList: widget.service.businessList,
+                      removeBusiness: removeBusiness,
+                      removedBusinessList: widget.service.removedBusinessList,
                     ),
                   ),
                 );
@@ -132,7 +136,7 @@ class _StaffMenuState extends State<StaffMenu> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  "Remove Account",
+                  "Remove Business",
                   style: TextStyle(
                     color: Colors.black,
                   ),
@@ -144,13 +148,13 @@ class _StaffMenuState extends State<StaffMenu> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => RestoreAccount(
-                      removedStaffList: widget.service.removedStaffList,
-                      staffList: widget.service.staffList,
-                      restoreStaff: (Staff staff) {
+                    builder: (context) => RestoreBusiness(
+                      removedBusinessList: widget.service.removedBusinessList,
+                      businessList: widget.service.businessList,
+                      restoreBusiness: (Business business) {
                         setState(() {
-                          widget.service.removedStaffList.remove(staff);
-                          widget.service.staffList.add(staff);
+                          widget.service.removedBusinessList.remove(business);
+                          widget.service.businessList.add(business);
                         });
                       },
                     ),
@@ -177,9 +181,9 @@ class _StaffMenuState extends State<StaffMenu> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Viewdetails(
-                      staffList: widget.service.staffList,
-                      removedStaffList: widget.service.removedStaffList,
+                    builder: (context) => ViewBusinessDetail(
+                      businessList: widget.service.businessList,
+                      removedBusinessList: widget.service.removedBusinessList,
                     ),
                   ),
                 );
@@ -192,7 +196,7 @@ class _StaffMenuState extends State<StaffMenu> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  "View Staff Details",
+                  "View Business Details",
                   style: TextStyle(
                     color: Colors.black,
                   ),

@@ -17,7 +17,7 @@ class _UpdatenameState extends State<Updatename> {
   late String _name;
   late String _address;
   late int _age;
-  late int _id;
+  late int _tax;
 
   @override
   void initState() {
@@ -25,6 +25,7 @@ class _UpdatenameState extends State<Updatename> {
     _name = widget.staff.name;
     _address = widget.staff.address;
     _age = widget.staff.age;
+    _tax = widget.staff.tax;
   }
 
   @override
@@ -62,7 +63,7 @@ class _UpdatenameState extends State<Updatename> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
-                  initialValue: widget.staff.tax.toString(),
+                  initialValue: _tax.toString(),
                   readOnly: true,
                   decoration: InputDecoration(
                     labelText: "Staff's TAX Number",
@@ -71,6 +72,19 @@ class _UpdatenameState extends State<Updatename> {
                       borderRadius: BorderRadius.circular(50),
                     ),
                   ),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter an tax';
+                    }
+                    if (int.tryParse(value) == null) {
+                      return 'Please enter a valid number';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _tax = int.parse(value!);
+                  },
                 ),
                 SizedBox(height: 10),
                 TextFormField(
@@ -124,10 +138,10 @@ class _UpdatenameState extends State<Updatename> {
                       _formKey.currentState!.save();
                       widget.updateStaff(Staff(
                         name: _name,
-                        tax: widget.staff.tax,
+                        tax: _tax,
                         address: _address,
                         age: _age,
-                        id: _id,
+                        id: widget.staff.id,
                       ));
                       Navigator.pop(context);
                     }
