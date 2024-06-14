@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/model/shift.dart';
 import 'package:flutter_application_1/service/roster_service.dart';
 import 'package:flutter_application_1/widget/roster/create_shift.dart';
 import 'package:flutter_application_1/widget/roster/delete_shift.dart';
 import 'package:flutter_application_1/widget/roster/list_shift.dart';
 import 'package:flutter_application_1/widget/roster/restore_shift.dart';
 import 'package:flutter_application_1/widget/roster/update_shift.dart';
-import 'package:meta/meta.dart';
+
+List<Shift> shifts = [];
 
 class RosterMenu extends StatelessWidget {
   const RosterMenu({super.key, required this.service});

@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/bottom_navigation_bar.dart';
 import 'package:flutter_application_1/service/allowance_service.dart';
-
-import 'package:flutter_application_1/home_page.dart';
 
 void main() {
   //runRoster();
   //runStaff();
   ///runAllowance();
-  runHomePage();
+  runMainPage();
 }
 
-void runHomePage() {
-  GetHomePage homePage = GetHomePage();
-  runApp(homePage.getHomeUI());
+void runMainPage() {
+  MainPage getMainPage = MainPage();
+  runApp(getMainPage.getMainPage());
 }
 
 void runAllowance() {
