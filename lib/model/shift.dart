@@ -1,8 +1,18 @@
-class Shift {
-  String name;
-  String date;
-  String time;
-  bool isDeleted;
 
-  Shift(this.name, this.date, this.time) : isDeleted = false;
+class Shift {
+  int id;
+  String startTime;
+  String endTime;
+
+
+  Shift({
+  required this.id,
+  required this.startTime, 
+  required this.endTime}) ;
+
+  @override
+  String toString(){
+  return 'ID :$id  , Date: $startTime ,Time : $endTime' ;
+}
+
 }

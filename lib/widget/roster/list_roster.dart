@@ -1,26 +1,27 @@
+
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/shift.dart';
-import 'package:flutter_application_1/widget/roster/active_shift.dart';
-import 'package:flutter_application_1/widget/roster/deleted_shift.dart';
+import 'package:flutter_application_1/model/roster.dart';
+import 'package:flutter_application_1/widget/roster/active_roster.dart';
+import 'package:flutter_application_1/widget/roster/deleted_roster.dart';
 
 // ignore: must_be_immutable
-class ListShift extends StatefulWidget {
-  ListShift({super.key, required this.Service});
+class ListRoster extends StatefulWidget {
+  ListRoster({super.key, required this.Service});
   final Service;
-  List<Shift> shifts = [];
+  List<Roster> roster = [];
 
   @override
-  State<ListShift> createState() => _listShiftState();
+  State<ListRoster> createState() => _listShiftState();
 }
 
-class _listShiftState extends State<ListShift> {
+class _listShiftState extends State<ListRoster> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
         title: Text(
-          "Shift",
+          "Roster",
           style: TextStyle(fontSize: 25),
         ),
       ),
@@ -44,10 +45,10 @@ class _listShiftState extends State<ListShift> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            ActiveShift(shifts: widget.Service.shifts),
+                            ActiveRoster(service: widget.Service),
                       ));
                 },
-                child: Text("Active Shift")),
+                child: Text("Active Roster")),
             SizedBox(
               height: 20,
             ),
@@ -65,10 +66,10 @@ class _listShiftState extends State<ListShift> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            Deletedshift(shifts: widget.Service.shifts),
+                            DeletedRoster(rosters: widget.Service.removeRosters),
                       ));
                 },
-                child: Text("Deleted Shift")),
+                child: Text("Deleted Roster")),
           ],
         ),
       ),

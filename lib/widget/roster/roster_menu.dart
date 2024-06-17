@@ -1,130 +1,189 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_application_1/service/roster_service.dart';
-import 'package:flutter_application_1/widget/roster/create_shift.dart';
-import 'package:flutter_application_1/widget/roster/delete_shift.dart';
-import 'package:flutter_application_1/widget/roster/list_shift.dart';
-import 'package:flutter_application_1/widget/roster/restore_shift.dart';
-import 'package:flutter_application_1/widget/roster/update_shift.dart';
+import 'package:flutter_application_1/model/roster.dart';
+import 'package:flutter_application_1/service/rostershift_service.dart';
+import 'package:flutter_application_1/widget/roster/create_roster.dart';
+import 'package:flutter_application_1/widget/roster/delete_roster.dart';
+import 'package:flutter_application_1/widget/roster/list_roster.dart';
+import 'package:flutter_application_1/widget/roster/restore_roster.dart';
+import 'package:flutter_application_1/widget/roster/update_roster.dart';
 
-class Rostermenu extends StatelessWidget {
-  const Rostermenu({super.key, required this.service});
-  final RosterService service;
+
+
+class RosterMenu extends StatefulWidget {
+  const RosterMenu({Key ?key,required this.service, }) :super(key: key);
+final RosterService service;
 
   @override
+  State<RosterMenu> createState() => _RosterMenuState();
+}
+
+class _RosterMenuState extends State<RosterMenu> {
+List<Roster> rosters =[];
+List<Roster> removeRosters =[];
+
+
+  @override
+  void initState(){
+    super.initState();
+    rosters =widget.service.rosters;
+    removeRosters=widget.service.removeRosters;
+  }
+
+  void addRoster(Roster roster) {
+    setState(() {
+      rosters.add(roster);
+      widget.service.rosters = rosters;
+    });
+  }
+
+  void removeBusiness(int id) {
+    setState(() {
+      Roster? roster = rosters.firstWhere(
+        (roster) => roster.id == id,
+      );
+      if (Roster != null) {
+        rosters.remove(roster);
+        removeRosters.add(roster);
+      }
+    });
+  }
+
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.cyan,
-        title: Text("Roster Management"),
-      ),
+    return  Scaffold(
+
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 20),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.cyanAccent,
-                  shadowColor: Colors.black,
-                  elevation: 5,
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  textStyle: TextStyle(fontSize: 20),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Create(service: service)));
-                },
-                child: Text("1. Create Shift")),
             SizedBox(height: 10),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.cyanAccent,
-                  shadowColor: Colors.black,
-                  elevation: 5,
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  textStyle: TextStyle(fontSize: 20),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CreateRoster(
+                      service: widget.service,
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                margin: EdgeInsets.symmetric(vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.cyan,
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ListShift(Service: service)));
-                },
-                child: Text("2. List Shift")),
-            SizedBox(height: 10),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.cyanAccent,
-                  shadowColor: Colors.black,
-                  elevation: 5,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  textStyle: TextStyle(fontSize: 20),
+                child: Text(
+                  "Create Roster",
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Update(
-                                service: service,
-                              )));
-                },
-                child: Text("3. Update Shift")),
-            SizedBox(height: 10),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.cyanAccent,
-                  shadowColor: Colors.black,
-                  elevation: 5,
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  textStyle: TextStyle(fontSize: 20),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UpdateRoster(
+                      rosters: widget.service.rosters,
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                margin: EdgeInsets.symmetric(vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.cyan,
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => delete(service: service)));
-                },
-                child: Text("4. Delete Shift")),
-            SizedBox(height: 10),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.cyanAccent,
-                  shadowColor: Colors.black,
-                  elevation: 5,
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  textStyle: TextStyle(fontSize: 20),
+                child: Text(
+                  "Update Roster",
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Restore(
-                                service: service,
-                              )));
-                },
-                child: Text("5. Restore Shift")),
-            SizedBox(height: 10),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.cyan,
-                  shadowColor: Colors.black,
-                  elevation: 5,
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  textStyle: TextStyle(fontSize: 20),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DeleteRoster(
+                      service: widget.service,
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                margin: EdgeInsets.symmetric(vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.cyan,
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                onPressed: () {
-                  SystemNavigator.pop();
-                },
-                child: Text("6. Exit")),
+                child: Text(
+                  "Remove Roster",
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        RestoreRoster(service: widget.service),
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                margin: EdgeInsets.symmetric(vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.cyan,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  "Restore Roster",
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ListRoster(Service: widget.service),
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                margin: EdgeInsets.symmetric(vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.cyan,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  "View Rosters",
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
