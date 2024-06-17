@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/model/business.dart';
 import 'package:flutter_application_1/model/staff.dart';
-import 'package:flutter_application_1/service/staff_service.dart';
+import 'package:flutter_application_1/service/business_service.dart';
 
 class CreateAccount extends StatefulWidget {
-  final Function(Staff) addStaff;
-  final List<Staff> staffList;
+  final Business business;
 
-  const CreateAccount(
-      {Key? key, required this.addStaff, required this.staffList})
-      : super(key: key);
+  const CreateAccount({Key? key, required this.business}) : super(key: key);
 
   @override
   _CreateAccountState createState() => _CreateAccountState();
@@ -120,7 +118,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    int newId = StaffService.getNextId();
+                    int newId = BusinessService.getNextId();
                     Staff newStaff = Staff(
                       name: name,
                       tax: tax,
@@ -128,7 +126,7 @@ class _CreateAccountState extends State<CreateAccount> {
                       age: age,
                       id: newId,
                     );
-                    widget.addStaff(newStaff);
+                    widget.business.addStaff(newStaff);
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text("Account Created Successfully")));
                     Navigator.pop(context, newStaff);

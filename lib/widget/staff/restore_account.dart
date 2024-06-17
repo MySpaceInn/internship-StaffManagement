@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/model/business.dart';
 import 'package:flutter_application_1/model/staff.dart';
 
 class RestoreAccount extends StatefulWidget {
-  final List<Staff> removedStaffList;
-  final List<Staff> staffList;
-  final void Function(Staff staff) restoreStaff;
+  final Business business;
 
-  const RestoreAccount({
-    Key? key,
-    required this.removedStaffList,
-    required this.staffList,
-    required this.restoreStaff,
-  }) : super(key: key);
+  const RestoreAccount({super.key, required this.business});
 
   @override
   State<RestoreAccount> createState() => _RestoreAccountState();
@@ -65,7 +59,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
                     if (_id != null) {
                       Staff? staff = _getStaffByid(_id!);
                       if (staff != null) {
-                        widget.restoreStaff(staff);
+                        widget.business.restoreStaff(staff);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                               content: Text('Staff restored successfully')),
@@ -95,7 +89,8 @@ class _RestoreAccountState extends State<RestoreAccount> {
 
   Staff? _getStaffByid(int id) {
     try {
-      return widget.removedStaffList.firstWhere((staff) => staff.id == id);
+      return widget.business.removedStaffList
+          .firstWhere((staff) => staff.id == id);
     } catch (e) {
       return null;
     }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/model/business.dart';
 import 'package:flutter_application_1/model/staff.dart';
-import 'package:flutter_application_1/service/staff_service.dart';
 import 'package:flutter_application_1/widget/staff/create_account.dart';
 import 'package:flutter_application_1/widget/staff/remove_account.dart';
 import 'package:flutter_application_1/widget/staff/restore_account.dart';
@@ -8,40 +8,34 @@ import 'package:flutter_application_1/widget/staff/update_account.dart';
 import 'package:flutter_application_1/widget/staff/view_details.dart';
 
 class StaffMenu extends StatefulWidget {
-  final StaffService service;
+  final Business business;
 
-  StaffMenu({Key? key, required this.service}) : super(key: key);
+  StaffMenu({Key? key, required this.business}) : super(key: key);
 
   @override
   _StaffMenuState createState() => _StaffMenuState();
 }
 
 class _StaffMenuState extends State<StaffMenu> {
-  List<Staff> staffList = [];
-  List<Staff> removedStaffList = [];
-
   @override
   void initState() {
     super.initState();
-    staffList = widget.service.staffList;
-    removedStaffList = widget.service.removedStaffList;
   }
 
   void addStaff(Staff staff) {
     setState(() {
-      staffList.add(staff);
-      widget.service.staffList = staffList;
+      widget.business.addStaff(staff);
     });
   }
 
   void removeStaff(int tax) {
     setState(() {
-      Staff? staff = staffList.firstWhere(
+      Staff? staff = widget.business.staffList.firstWhere(
         (staff) => staff.tax == tax,
       );
       if (staff != null) {
-        staffList.remove(staff);
-        removedStaffList.add(staff);
+        widget.business.staffList.remove(staff);
+        widget.business.removedStaffList.add(staff);
       }
     });
   }
@@ -64,8 +58,7 @@ class _StaffMenuState extends State<StaffMenu> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => CreateAccount(
-                      staffList: widget.service.staffList,
-                      addStaff: addStaff,
+                      business: widget.business,
                     ),
                   ),
                 );
@@ -90,9 +83,8 @@ class _StaffMenuState extends State<StaffMenu> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => UpdateAccount(
-                      staffList: widget.service.staffList,
-                    ),
+                    builder: (context) =>
+                        UpdateAccount(business: widget.business),
                   ),
                 );
               },
@@ -116,11 +108,8 @@ class _StaffMenuState extends State<StaffMenu> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Deleteaccount(
-                      staffList: widget.service.staffList,
-                      removeStaff: removeStaff,
-                      removedStaffList: widget.service.removedStaffList,
-                    ),
+                    builder: (context) =>
+                        Deleteaccount(business: widget.business),
                   ),
                 );
               },
@@ -144,16 +133,8 @@ class _StaffMenuState extends State<StaffMenu> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => RestoreAccount(
-                      removedStaffList: widget.service.removedStaffList,
-                      staffList: widget.service.staffList,
-                      restoreStaff: (Staff staff) {
-                        setState(() {
-                          widget.service.removedStaffList.remove(staff);
-                          widget.service.staffList.add(staff);
-                        });
-                      },
-                    ),
+                    builder: (context) =>
+                        RestoreAccount(business: widget.business),
                   ),
                 );
               },
@@ -178,8 +159,8 @@ class _StaffMenuState extends State<StaffMenu> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => Viewdetails(
-                      staffList: widget.service.staffList,
-                      removedStaffList: widget.service.removedStaffList,
+                      staffList: widget.business.staffList,
+                      removedStaffList: widget.business.removedStaffList,
                     ),
                   ),
                 );

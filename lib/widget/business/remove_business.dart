@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/business.dart';
+import 'package:flutter_application_1/service/business_service.dart';
 import 'package:flutter_application_1/widget/business/delete_business_detail.dart';
 
 class DeleteBusiness extends StatefulWidget {
-  final List<Business> businessList;
-  final Function(int) removeBusiness;
-  final List<Business> removedBusinessList;
+  final BusinessService businessService;
 
-  const DeleteBusiness({
-    Key? key,
-    required this.businessList,
-    required this.removeBusiness,
-    required this.removedBusinessList,
-  }) : super(key: key);
+  const DeleteBusiness({Key? key, required this.businessService})
+      : super(key: key);
 
   @override
   State<DeleteBusiness> createState() => _DeleteBusinessState();
@@ -64,12 +58,13 @@ class _DeleteBusinessState extends State<DeleteBusiness> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     if (_id != null && _isidRegistered(_id!)) {
-                      widget.removeBusiness(_id!);
+                      widget.businessService.removeBusiness(_id!);
                       Navigator.pop(
                         context,
                         MaterialPageRoute(
                           builder: (context) => DeleteBusinessDetail(
-                            businessList: widget.removedBusinessList,
+                            businessList:
+                                widget.businessService.removedBusinessList,
                           ),
                         ),
                       );
@@ -95,6 +90,7 @@ class _DeleteBusinessState extends State<DeleteBusiness> {
   }
 
   bool _isidRegistered(int id) {
-    return widget.businessList.any((business) => business.id == id);
+    return widget.businessService.businessList
+        .any((business) => business.id == id);
   }
 }

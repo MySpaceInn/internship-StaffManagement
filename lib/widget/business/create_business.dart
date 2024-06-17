@@ -3,11 +3,9 @@ import 'package:flutter_application_1/model/business.dart';
 import 'package:flutter_application_1/service/business_service.dart';
 
 class CreateBusiness extends StatefulWidget {
-  final Function(Business) addBusiness;
-  final List<Business> BusinessList;
+  final BusinessService businessService;
 
-  const CreateBusiness(
-      {Key? key, required this.addBusiness, required this.BusinessList})
+  const CreateBusiness({Key? key, required this.businessService})
       : super(key: key);
 
   @override
@@ -29,7 +27,7 @@ class _CreateBusinessState extends State<CreateBusiness> {
         backgroundColor: Colors.cyan,
         title: Text("Business Detail"),
       ),
-      body: Padding(
+      body: Container(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -149,7 +147,7 @@ class _CreateBusinessState extends State<CreateBusiness> {
                       ownerName: ownerName,
                       id: newId,
                     );
-                    widget.addBusiness(newBusiness);
+                    widget.businessService.addBusiness(newBusiness);
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text("Account Created Successfully")));
                     Navigator.pop(context, newBusiness);

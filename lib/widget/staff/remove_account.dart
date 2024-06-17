@@ -1,20 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/model/business.dart';
 
 import 'package:flutter_application_1/model/staff.dart';
 import 'package:flutter_application_1/widget/staff/delete_details.dart';
 
 class Deleteaccount extends StatefulWidget {
-  final List<Staff> staffList;
-  final Function(int) removeStaff;
-  final List<Staff> removedStaffList;
+  final Business business;
 
   const Deleteaccount({
-    Key? key,
-    required this.staffList,
-    required this.removeStaff,
-    required this.removedStaffList,
-  }) : super(key: key);
+    super.key,
+    required this.business,
+  });
 
   @override
   State<Deleteaccount> createState() => _DeleteaccountState();
@@ -66,12 +63,12 @@ class _DeleteaccountState extends State<Deleteaccount> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     if (_id != null && _isidRegistered(_id!)) {
-                      widget.removeStaff(_id!);
+                      widget.business.removeStaff(_id!);
                       Navigator.pop(
                         context,
                         MaterialPageRoute(
                           builder: (context) => DeleteStaffDetails(
-                            staffList: widget.removedStaffList,
+                            staffList: widget.business.removedStaffList,
                           ),
                         ),
                       );
@@ -97,6 +94,6 @@ class _DeleteaccountState extends State<Deleteaccount> {
   }
 
   bool _isidRegistered(int id) {
-    return widget.staffList.any((staff) => staff.id == id);
+    return widget.business.staffList.any((staff) => staff.id == id);
   }
 }

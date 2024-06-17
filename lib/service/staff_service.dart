@@ -1,34 +1,30 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/staff.dart';
-import 'package:flutter_application_1/widget/staff/staff_menu.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_application_1/model/staff.dart';
+// import 'package:flutter_application_1/widget/staff/staff_menu.dart';
 
-class StaffService {
-  List<Staff> staffList = [];
-  List<Staff> removedStaffList = [];
-  static int _nextId = 100;
+// class StaffService {
+//   List<Staff> staffList = [];
+//   List<Staff> removedStaffList = [];
+//   static int _nextId = 100;
 
-  StaffService();
+//   StaffService();
 
-  static int getNextId() {
-    return _nextId++;
-  }
+//   static int getNextId() {
+//     return _nextId++;
+//   }
 
-  getAppMenu() {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: StaffMenu(
-        service: this,
-      ),
-    );
-  }
-}
+//   getAppMenu() {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       title: 'Flutter Demo',
+//       theme: ThemeData(
+//         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+//         useMaterial3: true,
+//       ),
+//       home: StaffMenu(
+//         service: this,
+//       ),
+//     );
+//   }
+// }
 
-void main() {
-  StaffService service = StaffService();
-  runApp(service.getAppMenu());
-}
