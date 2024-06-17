@@ -128,6 +128,7 @@ class _CreateAccountState extends State<CreateAccount> {
                       age: age,
                       id: newId,
                     );
+                    
                     widget.addStaff(newStaff);
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text("Account Created Successfully")));

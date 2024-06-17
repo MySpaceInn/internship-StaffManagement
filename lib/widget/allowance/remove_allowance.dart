@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/leave_model.dart';
 import 'package:flutter_application_1/service/allowance_service.dart';
-import 'package:flutter_application_1/widget/leave/update_leave_1.dart';
+import 'package:flutter_application_1/widget/allowance/deleted_allowance.dart';
 
-class UpdateLeavePage extends StatefulWidget {
+
+
+class DeleteAllowance extends StatefulWidget {
   final AllowanceService allowanceService;
 
-  const UpdateLeavePage({super.key, required this.allowanceService});
+  const DeleteAllowance({Key? key, required this.allowanceService})
+      : super(key: key);
 
   @override
-  State<UpdateLeavePage> createState() => _UpdateLeavePageState();
+  State<DeleteAllowance> createState() => _DeleteAllowanceState();
 }
 
-class _UpdateLeavePageState extends State<UpdateLeavePage> {
+class _DeleteAllowanceState extends State<DeleteAllowance> {
   final _formKey = GlobalKey<FormState>();
   int? _id;
 
@@ -21,7 +23,7 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Update Leave"),
+        title: Text("Remove Allowance"),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10),
@@ -31,16 +33,16 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
             children: [
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: "Enter ID Number",
-                  prefixIcon: Icon(Icons.insert_drive_file),
+                  prefixIcon: Icon(Icons.numbers),
+                  labelText: "Enter  ID  To Delete",
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(15),
                   ),
                 ),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter an ID Number';
+                    return 'Please enter a id number';
                   }
                   if (int.tryParse(value) == null) {
                     return 'Please enter a valid number';
@@ -53,37 +55,32 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.cyan,
-                  foregroundColor: Colors.black,
-                ),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    if (_id != null && _isIdRegistered(_id!)) {
-                      Leave leave = widget.allowanceService.repo.leaveList
-                          .firstWhere((leave) => leave.id == _id);
-                      Navigator.push(
+                    if (_id != null && _isidRegistered(_id!)) {
+                      widget.allowanceService.removeAllowance(_id!);
+                      Navigator.pop(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => UpdateLeave(
-                            allowanceService: widget.allowanceService,
-                            leave: leave,
+                          builder: (context) => DeletedAllowance(
+                            allowanceService: widget.allowanceService, 
                           ),
                         ),
-                      ).then((_) {
-                        setState(() {}); // Refresh the page to show updated data
-                      });
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Deleted Successfully")));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Invalid ID number')),
+                        SnackBar(content: Text('Invalid id number')),
                       );
                     }
                   }
                 },
                 child: Text(
-                  "Submit",
-                  style: TextStyle(color: Colors.black),
+                  "Delete",
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ],
@@ -93,7 +90,8 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
     );
   }
 
-  bool _isIdRegistered(int id) {
-    return widget.allowanceService.repo.leaveList.any((leave) => leave.id == id);
+  bool _isidRegistered(int id) {
+    return widget.allowanceService.repo.allowanceList
+        .any((allowannce) => allowannce.id == id);
   }
 }

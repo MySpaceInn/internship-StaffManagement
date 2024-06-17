@@ -1,26 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/model/leave_model.dart';
+import 'package:flutter_application_1/service/allowance_service.dart';
 
-class ActiveLeavePage extends StatelessWidget {
-    final Map<String, String> leaves; 
+class ActiveLeaveDetails extends StatelessWidget {
+  final AllowanceService allowanceService; 
 
-  const ActiveLeavePage({super.key,required this.leaves});
+  ActiveLeaveDetails({super.key, required this.allowanceService});
 
   @override
   Widget build(BuildContext context) {
+           List<Leave>activeLeave = allowanceService.getActiveLeaves() ;
+
     return Scaffold(
-      appBar: AppBar(title: Text('Active Leave Details')),
-      body: leaves.isEmpty
-          ? Center(child: Text('No active leaves are currently stored.'))
-          : ListView(
-              children: leaves.entries
-                  .map((entry) => ListTile(
-                        title: Text('Staff: ${entry.key}'),
-                        subtitle: Text(entry.value),
-                      )).toList()
-                  
-            ),
+      appBar: AppBar(
+        title: Text('Active Leave Details'),
+      ),
+      body: Center(
+        child: activeLeave.isEmpty
+            ? Text('There are no active Leave details!')
+            : ListView.builder(
+                itemCount: activeLeave.length,
+                itemBuilder: (context, index) {
+                  Leave item = activeLeave[index];
+                  return ListTile(
+                    title: Text(item.name),
+                    subtitle: Text(
+                        'ID: ${item.id},duration: ${item.duration} name: ${item.name}, Address: ${item.address}, type: ${item.type}'),
+                  );
+                },
+              ),
+      ),
     );
   }
 }
-
-

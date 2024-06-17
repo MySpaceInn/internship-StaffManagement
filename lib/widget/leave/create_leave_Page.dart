@@ -1,111 +1,156 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/model/leave_model.dart';
 import 'package:flutter_application_1/service/allowance_service.dart';
 
+class CreateLeave extends StatefulWidget {
+  final AllowanceService allowanceService;
 
-class CreateLeavePage extends StatefulWidget {
-  final AllowanceService service; // Service object 
-
-  const CreateLeavePage({Key? key, required this.service}) : super(key: key);
+  const CreateLeave({Key? key, required this.allowanceService}) : super(key: key);
 
   @override
-  State<CreateLeavePage> createState() => _CreateLeavePageState();
+  _CreateLeaveState createState() => _CreateLeaveState();
 }
 
-class _CreateLeavePageState extends State<CreateLeavePage> {
-  final List<String> leaveTypes = ['Paid Annual Leave', 'Unpaid Annual Leave', 'Sick Leave'];
-  String? _selectedLeaveType;
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _durationController = TextEditingController();
+class _CreateLeaveState extends State<CreateLeave> {
+  final _formKey = GlobalKey<FormState>();
+  String name = '';
+  String address = '';
+  String duration = '';
+  String? type; 
+
+  List<String> leaveTypes = [
+    'Paid Annual Leave',
+    'Unpaid Annual Leave',
+    'Sick Leave',
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Create Leave')),
+      appBar: AppBar(
+        backgroundColor: Colors.cyan,
+        title: Text("Leave Detail"),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                hintText: "Staff's name",
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: "Enter Staff's Name",
+                  prefixIcon: Icon(Icons.person),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                onSaved: (value) {
+                  name = value!;
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a name';
+                  }
+                  return null;
+                },
               ),
-            ),
-            SizedBox(height: 10),
-            TextField(keyboardType: TextInputType.number,
-              controller: _durationController,
-              decoration: InputDecoration(
-                
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                hintText: "Duration of leave",
+              SizedBox(height: 15),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: "Enter Duration",
+                  prefixIcon: Icon(Icons.date_range),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                keyboardType: TextInputType.number,
+                onSaved: (value) {
+                  duration = value!;
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a duration';
+                  }
+                  return null;
+                },
               ),
-            ),
-            SizedBox(height: 10),
-            DropdownButton<String>(
-              hint: Text("Select leave type"),
-              items: leaveTypes.map((String type) {
-                return DropdownMenuItem<String>(
-                  value: type,
-                  child: Text(type),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  _selectedLeaveType = newValue;
-                });
-              },
-              value: _selectedLeaveType,
-            ),
-            SizedBox(height: 15),
-            ElevatedButton(
-              onPressed: () {
-                String staffName = _nameController.text;
-                String leaveDuration = _durationController.text;
-
-                if (staffName.isNotEmpty && leaveDuration.isNotEmpty && _selectedLeaveType != null) {
-                  widget.service.leaves[staffName] = "Duration: $leaveDuration, Type: $_selectedLeaveType";
-
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Leave Created'),
-                        content: Text('Leave has been created for $staffName with a duration of $leaveDuration days as $_selectedLeaveType.'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
+              SizedBox(height: 15),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: "Enter Leave's Address",
+                  prefixIcon: Icon(Icons.location_city_rounded),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                onSaved: (value) {
+                  address = value!;
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter an address';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 15),
+              DropdownButtonFormField<String>(
+                value: type,
+                decoration: InputDecoration(
+                  labelText: 'Select Leave Type',
+                  prefixIcon: Icon(Icons.category),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                items: leaveTypes.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
                   );
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Error'),
-                        content: Text('Please fill in all fields.'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                }
-              },
-              child: Text('Create Leave'),
-            ),
-          ],
+                }).toList(),
+                onChanged: (newValue) {
+                  setState(() {
+                    type = newValue;
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please select a leave type';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 15),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.lightBlue,
+                ),
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    int newId = Leave.getNextLeaveId();
+                    Leave newLeave = Leave(
+                      name: name,
+                      duration: duration,
+                      address: address,
+                      type: type!,
+                      id: newId,
+                    );
+                    widget.allowanceService.createLeave(newLeave);
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Leave Created Successfully"),
+                    ));
+                    Navigator.pop(context, newLeave);
+                  }
+                },
+                child: Text("Submit"),
+              ),
+            ],
+          ),
         ),
       ),
     );

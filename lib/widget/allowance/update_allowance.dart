@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/leave_model.dart';
+import 'package:flutter_application_1/model/allowance_model.dart';
 import 'package:flutter_application_1/service/allowance_service.dart';
-import 'package:flutter_application_1/widget/leave/update_leave_1.dart';
+import 'package:flutter_application_1/widget/allowance/update_allowancepage.dart';
 
-class UpdateLeavePage extends StatefulWidget {
+class UpdateAllowance extends StatefulWidget {
   final AllowanceService allowanceService;
 
-  const UpdateLeavePage({super.key, required this.allowanceService});
+  const UpdateAllowance({Key? key, required this.allowanceService, })
+      : super(key: key);
 
   @override
-  State<UpdateLeavePage> createState() => _UpdateLeavePageState();
+  State<UpdateAllowance> createState() => _UpdateAllowanceState();
 }
 
-class _UpdateLeavePageState extends State<UpdateLeavePage> {
+class _UpdateAllowanceState extends State<UpdateAllowance> {
   final _formKey = GlobalKey<FormState>();
   int? _id;
 
@@ -21,7 +22,7 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Update Leave"),
+        title: Text("Update Allowance"),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10),
@@ -32,9 +33,9 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
               TextFormField(
                 decoration: InputDecoration(
                   labelText: "Enter ID Number",
-                  prefixIcon: Icon(Icons.insert_drive_file),
+                  prefixIcon: Icon(Icons.attach_money),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(15),
                   ),
                 ),
                 keyboardType: TextInputType.number,
@@ -54,21 +55,21 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
               SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.cyan,
-                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.lightBlue,
+                  foregroundColor: Colors.white,
                 ),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     if (_id != null && _isIdRegistered(_id!)) {
-                      Leave leave = widget.allowanceService.repo.leaveList
-                          .firstWhere((leave) => leave.id == _id);
+                      Allowance allowance = widget.allowanceService.repo.allowanceList
+                          .firstWhere((allowance) => allowance.id == _id);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => UpdateLeave(
+                          builder: (context) => UpdateAllowancePage(
                             allowanceService: widget.allowanceService,
-                            leave: leave,
+                            allowance: allowance,
                           ),
                         ),
                       ).then((_) {
@@ -94,6 +95,6 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
   }
 
   bool _isIdRegistered(int id) {
-    return widget.allowanceService.repo.leaveList.any((leave) => leave.id == id);
+    return widget.allowanceService.repo.allowanceList.any((allowance) => allowance.id == id);
   }
 }

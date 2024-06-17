@@ -1,20 +1,26 @@
+
 class Allowance {
-  String name;
-  String tax;
   int id;
+  String dateIssued;
+  String type;
+  String name;
   String address;
-  int age;
+  String amount;
+  
+  static int _nextAllowanceId = 100;
 
   Allowance({
-    required this.name,
-    required this.tax,
     required this.id,
+    required this.type,
+    required this.dateIssued,
+    required this.name,
     required this.address,
-    required this.age,
+    required this.amount,
   });
-  String toString() {
-    return 'Name: $name, Pan: $tax, Address: $address, Age: $age, id: $id';
+
+  static int getNextId() {
+    return _nextAllowanceId++;
   }
 
- 
+  
 }

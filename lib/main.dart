@@ -6,7 +6,8 @@ import 'package:flutter_application_1/service/roster_service.dart';
 void main() {
   //runRoster();
   //runStaff();
- runAllowance();
+//runLeave();
+runAllowance();
 }
 
 void runRoster() {
@@ -17,9 +18,19 @@ void runRoster() {
 void runStaff() {
   runApp(BusinessService().getAppMenu());
 }
-void runAllowance(){
- AllowanceService allowance = AllowanceService();
-  
-   runApp(allowance.getAppMenu());
 
+void runAllowance() {
+  runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.cyan,
+            title: const Text("Allowance Management"),
+          ),
+          body: AllowanceService().getAllowanceHome())));
 }

@@ -1,35 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/model/leave_model.dart';
+import 'package:flutter_application_1/service/allowance_service.dart';
 
-class DeletedLeavePage extends StatelessWidget {
-   final List<Map<String, String>> Deletedleaves; 
-  const DeletedLeavePage({super.key,required this.Deletedleaves});
+class DeletedLeaveDetails extends StatelessWidget {
+  final AllowanceService allowanceService;
+
+  DeletedLeaveDetails({required this.allowanceService,});
 
   @override
   Widget build(BuildContext context) {
+    List<Leave>removedLeave=allowanceService.getRemovedLeave();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Deleted Leave details"),
-        
+        backgroundColor: Colors.cyan,
+        title: Text('Deleted Leave Details'),
       ),
-      body: Deletedleaves.isEmpty
-                ? Center(child: Text('No Deleted leaves are currently stored.'))
-                :ListView(
-                   children: Deletedleaves.map((leave) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: leave.entries.map((entry) {
-                    return ListTile(
-                      title: Text('Staff: ${entry.key}'),
-                      subtitle: Text(entry.value),
-                    );
-                  }
-                  ).toList(),
-                );
-              }
-              ).toList(),
-            ),
-
-
+      body: Center(
+        child: removedLeave.isEmpty
+            ? Text('There are no deleted Leave details!')
+            : ListView.builder(
+              
+                itemCount: removedLeave.length,
+                itemBuilder: (context, index) {
+                  Leave iteam=(removedLeave[index]);
+                  return ListTile(
+                    title: Text(iteam.name),
+                    subtitle: Text(
+                        'ID: ${iteam.id} duration: ${iteam.duration}, Address: ${iteam.address}, type: ${iteam.type}'),
+                  );
+                },
+              ),
+      ),
     );
   }
 }
