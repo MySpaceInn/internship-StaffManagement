@@ -24,41 +24,7 @@ class RosterMenu extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            SizedBox(height: 20),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.cyanAccent,
-                  shadowColor: Colors.black,
-                  elevation: 5,
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  textStyle: TextStyle(fontSize: 20),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Create(service: service)));
-                },
-                child: Text("1. Create Shift")),
-            SizedBox(height: 10),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.cyanAccent,
-                  shadowColor: Colors.black,
-                  elevation: 5,
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  textStyle: TextStyle(fontSize: 20),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ListShift(Service: service)));
-                },
-                child: Text("2. List Shift")),
-            SizedBox(height: 10),
+            const SizedBox(height: 20),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.black,
@@ -67,7 +33,43 @@ class RosterMenu extends StatelessWidget {
                   elevation: 5,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  textStyle: TextStyle(fontSize: 20),
+                  textStyle: const TextStyle(fontSize: 20),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Create(service: service)));
+                },
+                child: const Text("1. Create Shift")),
+            const SizedBox(height: 10),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.cyanAccent,
+                  shadowColor: Colors.black,
+                  elevation: 5,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  textStyle: const TextStyle(fontSize: 20),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ListShift(Service: service)));
+                },
+                child: const Text("2. List Shift")),
+            const SizedBox(height: 10),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.cyanAccent,
+                  shadowColor: Colors.black,
+                  elevation: 5,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  textStyle: const TextStyle(fontSize: 20),
                 ),
                 onPressed: () {
                   Navigator.push(
@@ -77,7 +79,7 @@ class RosterMenu extends StatelessWidget {
                                 service: service,
                               )));
                 },
-                child: Text("3. Update Shift")),
+                child: const Text("3. Update Shift")),
             SizedBox(height: 10),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
