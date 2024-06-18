@@ -9,7 +9,7 @@ void runRoster() {
 }
 
 void runStaff() {
-  runApp(BusinessService().getAppMenu());
+  runApp(BusinessService().getBusinessHome());
 }
 
 List<String> demoList = <String>[];

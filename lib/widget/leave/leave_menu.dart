@@ -1,91 +1,104 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/staff.dart';
-import 'package:flutter_application_1/service/business_service.dart';
-import 'package:flutter_application_1/widget/staff/create_account.dart';
-import 'package:flutter_application_1/widget/staff/remove_account.dart';
-import 'package:flutter_application_1/widget/staff/restore_account.dart';
-import 'package:flutter_application_1/widget/staff/update_account.dart';
-import 'package:flutter_application_1/widget/staff/view_details.dart';
+import 'package:flutter_application_1/service/allowance_service.dart';
+import 'package:flutter_application_1/widget/leave/create_leave_Page.dart';
+import 'package:flutter_application_1/widget/leave/remove_leavepage.dart';
+import 'package:flutter_application_1/widget/leave/restore_leavepage.dart';
+import 'package:flutter_application_1/widget/leave/update_leave.dart';
 
-class StaffMenu extends StatefulWidget {
-  final BusinessService businessService;
+import 'package:flutter_application_1/widget/leave/view_detailspage.dart';
 
-  StaffMenu({Key? key, required this.businessService}) : super(key: key);
+
+
+class LeaveMenu extends StatefulWidget {
+  final AllowanceService allowanceService;
+
+  LeaveMenu({Key? key, required this.allowanceService}) : super(key: key);
 
   @override
-  _StaffMenuState createState() => _StaffMenuState();
+  _LeaveMenuState createState() => _LeaveMenuState();
 }
 
-class _StaffMenuState extends State<StaffMenu> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void addStaff(Staff staff) {
-    setState(() {
-      widget.businessService.addStaff(staff);
-    });
-  }
-
-  void removeStaff(int tax) {
-    setState(() {
-      Staff? staff = widget.businessService.getStaffs().firstWhere(
-            (staff) => staff.tax == tax,
-          );
-      if (staff != null) {
-        widget.businessService.getStaffs().remove(staff);
-        widget.businessService.getRemovedStaffs().add(staff);
-      }
-    });
-  }
-
+class _LeaveMenuState extends State<LeaveMenu> {
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Staff Management"),
+        title: Text("leave Management"),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 10),
+            SizedBox(height: 20),
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CreateAccount(
-                      createStaff: widget.businessService.addStaff,
+                    builder: (context) => CreateLeave(
+                    createLeave: widget.allowanceService.createLeave
                     ),
                   ),
                 );
               },
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                 margin: EdgeInsets.symmetric(vertical: 5),
                 decoration: BoxDecoration(
-                  color: Colors.cyan,
+                  color: Colors.lightBlue,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  "Create Account",
+                  "Create leave",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
               ),
             ),
+             SizedBox(height: 20),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UpdateLeavePage(allowanceService: widget.allowanceService)
+                      
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                margin: EdgeInsets.symmetric(vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.lightBlue,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  "Update leave",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+             SizedBox(height: 20),
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        UpdateAccount(businessService: widget.businessService),
+                        DeleteLeave(
+                          isLeaveIdRegistered:widget.allowanceService.isIdRegistered ,
+                          removeLeave: widget.allowanceService.removeLeave,
+
+
+
+
+                        ),
                   ),
                 );
               },
@@ -93,52 +106,54 @@ class _StaffMenuState extends State<StaffMenu> {
                 padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                 margin: EdgeInsets.symmetric(vertical: 5),
                 decoration: BoxDecoration(
-                  color: Colors.cyan,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  "Update Account",
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Deleteaccount(
-                        getRemovedStaff:
-                            widget.businessService.getRemovedStaffs,
-                        removeStaffById: widget.businessService.removeStaff),
-                  ),
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                margin: EdgeInsets.symmetric(vertical: 5),
-                decoration: BoxDecoration(
-                  color: Colors.cyan,
+                  color: Colors.lightBlue,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   "Remove Account",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
               ),
             ),
+             SizedBox(height: 20),
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => RestoreAccount(
-                      restoreStaff: widget.businessService.restoreStaff,
-                      removedStaffs: widget.businessService.getRemovedStaffs(),
+                    builder: (context) =>
+                        RestoreLeave(
+getRemovedLeaveById:widget.allowanceService.getRemovedLeaveById ,
+restoreLeave:widget.allowanceService.restoreLeave ,
+
+                        ),
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                margin: EdgeInsets.symmetric(vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.lightBlue,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  "Restore leave",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ), SizedBox(height: 20),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ViewLeaveDetails(
+                     allowanceService: widget.allowanceService,
                     ),
                   ),
                 );
@@ -147,42 +162,17 @@ class _StaffMenuState extends State<StaffMenu> {
                 padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                 margin: EdgeInsets.symmetric(vertical: 5),
                 decoration: BoxDecoration(
-                  color: Colors.cyan,
+                  color: Colors.lightBlue,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  "Restore Account",
+                  "View leave Details",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
               ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        Viewdetails(businessService: widget.businessService),
-                  ),
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                margin: EdgeInsets.symmetric(vertical: 5),
-                decoration: BoxDecoration(
-                  color: Colors.cyan,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  "View Staff Details",
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ),
+            ), SizedBox(height: 20),
           ],
         ),
       ),

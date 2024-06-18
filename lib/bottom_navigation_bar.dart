@@ -25,9 +25,9 @@ class _BottomNavigationBarExampleState
 
   final List<Widget> _widgetOptions = <Widget>[
     GetHomePage().getHomeUI(),
-    BusinessService().getAppMenu(),
+    BusinessService().getBusinessHome(),
     RosterService().getAppMenu(),
-    AllowanceService().getAppMenu(),
+    AllowanceService().getAllowanceHome(),
   ];
 
   void _onItemTapped(int index) {

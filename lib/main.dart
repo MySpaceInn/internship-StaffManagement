@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/bottom_navigation_bar.dart';
 import 'package:flutter_application_1/service/allowance_service.dart';
+import 'package:flutter_application_1/service/business_service.dart';
 
 void main() {
-  //runRoster();
-  //runStaff();
-  ///runAllowance();
   runMainPage();
 }
 
@@ -14,8 +12,34 @@ void runMainPage() {
   runApp(getMainPage.getMainPage());
 }
 
-void runAllowance() {
-  AllowanceService allowance = AllowanceService();
+void runBusiness() {
+  runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.cyan,
+            title: const Text("Business Management"),
+          ),
+          body: BusinessService().getBusinessHome())));
+}
 
-  runApp(allowance.getAppMenu());
+void runAllowance() {
+  runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.cyan,
+            title: const Text("Allowance Management"),
+          ),
+          body: AllowanceService().getAllowanceHome())));
 }

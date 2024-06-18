@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/staff.dart';
+import 'package:flutter_application_1/model/allowance_model.dart';
 
-class RestoreAccount extends StatefulWidget {
-  final Function(Staff) restoreStaff;
-  final List<Staff> removedStaffs;
+class RestoreAllowance extends StatefulWidget {
+  final Function(int) getRemovedAllowanceById;
+  final Function(Allowance) restoreAllowance;
 
-  const RestoreAccount({
-    super.key,
-    required this.restoreStaff,
-    required this.removedStaffs,
-  });
+  const RestoreAllowance(
+      {super.key,
+      required this.getRemovedAllowanceById,
+      required this.restoreAllowance});
 
   @override
-  State<RestoreAccount> createState() => _RestoreAccountState();
+  State<RestoreAllowance> createState() => _RestoreAllowanceState();
 }
 
-class _RestoreAccountState extends State<RestoreAccount> {
+class _RestoreAllowanceState extends State<RestoreAllowance> {
   final _formKey = GlobalKey<FormState>();
   int? _id;
 
@@ -24,7 +23,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Restore Details"),
+        title: const Text("Restore Allowance"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -34,16 +33,16 @@ class _RestoreAccountState extends State<RestoreAccount> {
             children: [
               TextFormField(
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.attach_money),
+                  prefixIcon: const Icon(Icons.numbers),
                   labelText: "Enter ID Number To Restore",
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(15),
                   ),
                 ),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter an ID number';
+                    return 'Please enter a id number';
                   }
                   if (int.tryParse(value) == null) {
                     return 'Please enter a valid number';
@@ -54,48 +53,42 @@ class _RestoreAccountState extends State<RestoreAccount> {
                   _id = int.parse(value!);
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.cyan),
+                style:
+                    ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     if (_id != null) {
-                      Staff? staff = _getStaffById(_id!);
-                      if (staff != null) {
-                        widget.restoreStaff(staff);
+                      Allowance? allowance =
+                          widget.getRemovedAllowanceById(_id!);
+                      if (allowance != null) {
+                        widget.restoreAllowance(allowance);
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text('Staff restored successfully')),
+                          const SnackBar(
+                              content: Text('Allowance restored successfully')),
                         );
                         Navigator.pop(context);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                               content:
-                                  Text('ID number not found in removed staff')),
+                                  Text('Id not found in removed Allowance')),
                         );
                       }
                     }
                   }
                 },
-                child: Text(
+                child: const Text(
                   "Restore",
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.white),
                 ),
-              ),
+              )
             ],
           ),
         ),
       ),
     );
-  }
-
-  Staff? _getStaffById(int id) {
-    try {
-      return widget.removedStaffs.firstWhere((staff) => staff.id == id);
-    } catch (e) {
-      return null;
-    }
   }
 }

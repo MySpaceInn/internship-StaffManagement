@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/leave_model.dart';
+import 'package:flutter_application_1/model/allowance_model.dart';
 import 'package:flutter_application_1/service/allowance_service.dart';
-import 'package:flutter_application_1/widget/leave/update_leave_1.dart';
+import 'package:flutter_application_1/widget/allowance/update_allowancepage.dart';
 
-class UpdateLeavePage extends StatefulWidget {
+class UpdateAllowance extends StatefulWidget {
   final AllowanceService allowanceService;
+  final List<Allowance> allowanceList;
 
-  const UpdateLeavePage({super.key, required this.allowanceService});
+  const UpdateAllowance({
+    Key? key,
+    required this.allowanceService,
+    required this.allowanceList,
+  }) : super(key: key);
 
   @override
-  State<UpdateLeavePage> createState() => _UpdateLeavePageState();
+  State<UpdateAllowance> createState() => _UpdateAllowanceState();
 }
 
-class _UpdateLeavePageState extends State<UpdateLeavePage> {
+class _UpdateAllowanceState extends State<UpdateAllowance> {
   final _formKey = GlobalKey<FormState>();
   int? _id;
 
@@ -21,7 +26,7 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Update Leave"),
+        title: const Text("Update Allowance"),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10),
@@ -32,9 +37,9 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
               TextFormField(
                 decoration: InputDecoration(
                   labelText: "Enter ID Number",
-                  prefixIcon: Icon(Icons.insert_drive_file),
+                  prefixIcon: Icon(Icons.attach_money),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
+                    borderRadius: BorderRadius.circular(15),
                   ),
                 ),
                 keyboardType: TextInputType.number,
@@ -51,25 +56,25 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
                   _id = int.parse(value!);
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.cyan,
-                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.lightBlue,
+                  foregroundColor: Colors.white,
                 ),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    if (_id != null && widget.allowanceService.isLeaveIdRegistered(_id!)) {
-                      Leave leave = widget.allowanceService.repo.leaveList
-                          .firstWhere((leave) => leave.id == _id);
+                    if (_id != null && widget.allowanceService.isIdRegistered(_id!)) {
+                      Allowance allowance = widget.allowanceList
+                          .firstWhere((allowance) => allowance.id == _id);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => UpdateLeave(
-                            isLeaveIdRegistered: widget.allowanceService.isIdRegistered,
-                           
-                            leave: leave, updateLeaves: widget.allowanceService.updateLeaves,
+                          builder: (context) => UpdateAllowancePage(
+                            isIdRegistered: widget.allowanceService.isIdRegistered,
+                            updateAllowances: widget.allowanceService.updateAllowances,
+                            allowance: allowance,
                           ),
                         ),
                       ).then((_) {
@@ -77,12 +82,12 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
                       });
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Invalid ID number')),
+                        const SnackBar(content: Text('Invalid ID number')),
                       );
                     }
                   }
                 },
-                child: Text(
+                child: const Text(
                   "Submit",
                   style: TextStyle(color: Colors.black),
                 ),
@@ -93,6 +98,4 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
       ),
     );
   }
-
- 
 }
