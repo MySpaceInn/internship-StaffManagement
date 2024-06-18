@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/leave_model.dart';
+import 'package:flutter_application_1/service/business_service.dart';
+import 'package:flutter_application_1/widget/business/delete_business_detail.dart';
 
+class DeleteBusiness extends StatefulWidget {
+  final BusinessService businessService;
 
-class RestoreLeave extends StatefulWidget {
-  final Function(int) getRemovedLeaveById;
-  final Function(Leave) restoreLeave;
-
-  const RestoreLeave({super.key,  required this.getRemovedLeaveById,
-  required this.restoreLeave});
+  const DeleteBusiness({Key? key, required this.businessService})
+      : super(key: key);
 
   @override
-  State<RestoreLeave> createState() => _RestoreLeaveState();
+  State<DeleteBusiness> createState() => _DeleteBusinessState();
 }
 
-class _RestoreLeaveState extends State<RestoreLeave> {
+class _DeleteBusinessState extends State<DeleteBusiness> {
   final _formKey = GlobalKey<FormState>();
   int? _id;
 
@@ -22,18 +21,18 @@ class _RestoreLeaveState extends State<RestoreLeave> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Restore Details"),
+        title: Text("Remove Business"),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(top: 10),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
               TextFormField(
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.insert_drive_file),
-                  labelText: "Enter id Number To Restore",
+                  prefixIcon: Icon(Icons.numbers),
+                  labelText: "Enter Registered ID Number To Delete",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -41,7 +40,7 @@ class _RestoreLeaveState extends State<RestoreLeave> {
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a ID number';
+                    return 'Please enter a id number';
                   }
                   if (int.tryParse(value) == null) {
                     return 'Please enter a valid number';
@@ -58,30 +57,23 @@ class _RestoreLeaveState extends State<RestoreLeave> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    if (_id != null) {
-                      Leave? leave = widget.getRemovedLeaveById(_id!);
-                      if (leave != null) {
-                        widget.restoreLeave(leave);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text('Leave restored successfully')),
-                        );
-                        Navigator.pop(context);
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content:
-                                  Text('id number not found in removed leave')),
-                        );
-                      }
+                    if (_id != null && _isidRegistered(_id!)) {
+                      widget.businessService.remove(_id!);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Deleted Successfully")));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Invalid id number')),
+                      );
                     }
                   }
                 },
                 child: Text(
-                  "Restore",
+                  "Delete",
                   style: TextStyle(color: Colors.black),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -89,5 +81,9 @@ class _RestoreLeaveState extends State<RestoreLeave> {
     );
   }
 
- 
+  bool _isidRegistered(int id) {
+    return widget.businessService
+        .getBusinessDetail()
+        .any((business) => business.id == id);
+  }
 }

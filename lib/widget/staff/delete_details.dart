@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/staff.dart';
+import 'package:flutter_application_1/service/business_service.dart';
 
 class DeleteStaffDetails extends StatelessWidget {
-  final List<Staff> staffList;
-
-  DeleteStaffDetails({required this.staffList});
+  final List<Staff> deleteStaff;
+  DeleteStaffDetails({required this.deleteStaff});
 
   @override
   Widget build(BuildContext context) {
@@ -14,15 +14,16 @@ class DeleteStaffDetails extends StatelessWidget {
         title: Text('Deleted Staff Details'),
       ),
       body: Center(
-        child: staffList.isEmpty
+        child: deleteStaff.isEmpty
             ? Text('There are no deleted staff details!')
             : ListView.builder(
-                itemCount: staffList.length,
+                itemCount: deleteStaff.length,
                 itemBuilder: (context, index) {
+                  Staff item = deleteStaff[index];
                   return ListTile(
-                    title: Text(staffList[index].name),
+                    title: Text(item.name),
                     subtitle: Text(
-                        'ID: ${staffList[index].id} PAN: ${staffList[index].tax}, Address: ${staffList[index].address}, Age: ${staffList[index].age}'),
+                        'ID: ${item.id} PAN: ${item.tax}, Address: ${item.address}, Age: ${item.age}'),
                   );
                 },
               ),

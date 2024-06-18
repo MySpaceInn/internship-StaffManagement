@@ -1,40 +1,90 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/service/allowance_service.dart';
+import 'package:flutter_application_1/widget/leave/deleted_leavepage.dart';
 
-class RemoveLeavePage extends StatefulWidget {
-  const RemoveLeavePage({super.key, required this.service});
-  final AllowanceService service;
+class DeleteLeave extends StatefulWidget {
+  final Function(int) removeLeave;
+    final bool Function(int) isLeaveIdRegistered;
+
+
+  const DeleteLeave({
+    super.key,
+    required this.removeLeave,
+    required this.isLeaveIdRegistered
+  });
 
   @override
-  State<RemoveLeavePage> createState() => _RemoveLeavePageState();
+  State<DeleteLeave> createState() => _DeleteLeaveState();
 }
 
-class _RemoveLeavePageState extends State<RemoveLeavePage> {
+class _DeleteLeaveState extends State<DeleteLeave> {
+  final _formKey = GlobalKey<FormState>();
+  int? _id;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Active Leave Details')),
-      body: widget.service.leaves.isEmpty
-          ? Center(child: Text('No active leaves are currently stored.'))
-          : ListView(
-              children: widget.service.leaves.entries
-                  .map((entry) => ListTile(
-                        title: Text('Staff: ${entry.key}'),
-                        subtitle: Text(entry.value),
-                        trailing: IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () {
-                            setState(() {
-                              widget.service.deletedLeaves
-                                  .add({entry.key: entry.value});
-                              //for removing
-                              widget.service.leaves.remove(entry.key);
-                            });
-                          },
-                        ),
-                      ))
-                  .toList(),
-            ),
+      appBar: AppBar(
+        backgroundColor: Colors.cyan,
+        title: Text("Remove Leave"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.attach_money),
+                  labelText: "Enterid To Delete",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a ID number';
+                  }
+                  if (int.tryParse(value) == null) {
+                    return 'Please enter a valid number';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _id = int.parse(value!);
+                },
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.cyan),
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    if (_id != null && widget.isLeaveIdRegistered(_id!)) {
+                      widget.removeLeave(_id!);
+                     
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Deleted Successfully")));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Invalid id number')),
+                      );
+                    }
+                  }
+                },
+                child: Text(
+                  "Delete",
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
+
+ 
 }

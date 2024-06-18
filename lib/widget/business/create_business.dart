@@ -1,32 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/business.dart';
-import 'package:flutter_application_1/model/staff.dart';
+import 'package:flutter_application_1/service/business_service.dart';
 import 'package:flutter_application_1/service/bussiness_repo.dart';
 
-class CreateAccount extends StatefulWidget {
-  final Function(Staff) createStaff;
+class CreateBusiness extends StatefulWidget {
+  final Function(Business) createBusiness;
 
-  CreateAccount({Key? key, required this.createStaff}) : super(key: key);
+  const CreateBusiness({Key? key, required this.createBusiness})
+      : super(key: key);
 
   @override
-  _CreateAccountState createState() => _CreateAccountState();
+  _CreateBusinessState createState() => _CreateBusinessState();
 }
 
-class _CreateAccountState extends State<CreateAccount> {
+class _CreateBusinessState extends State<CreateBusiness> {
   final _formKey = GlobalKey<FormState>();
-  String name = '';
+  String businessName = '';
   int tax = 0;
-  String address = '';
-  int age = 0;
+  String location = '';
+  String registeredDate = '';
+  String ownerName = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Staff's Detail"),
+        title: Text("Business Detail"),
       ),
-      body: Padding(
+      body: Container(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -35,18 +37,37 @@ class _CreateAccountState extends State<CreateAccount> {
             children: [
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: "Enter staff's Name",
+                  labelText: "Enter Business Name",
+                  prefixIcon: Icon(Icons.business),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+                onSaved: (value) {
+                  businessName = value!;
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your businessname';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 10),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: "Enter Owner Name",
                   prefixIcon: Icon(Icons.person),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
                 ),
                 onSaved: (value) {
-                  name = value!;
+                  ownerName = value!;
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a name';
+                    return 'Please enter  ownername';
                   }
                   return null;
                 },
@@ -74,18 +95,18 @@ class _CreateAccountState extends State<CreateAccount> {
               SizedBox(height: 15),
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: "Enter Staff's Address",
+                  labelText: "Enter Business Location",
                   prefixIcon: Icon(Icons.location_city_rounded),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
                 ),
                 onSaved: (value) {
-                  address = value!;
+                  location = value!;
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter an address';
+                    return 'Please enter your business location';
                   }
                   return null;
                 },
@@ -93,19 +114,19 @@ class _CreateAccountState extends State<CreateAccount> {
               SizedBox(height: 15),
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: "Enter Staff's Age",
-                  prefixIcon: Icon(Icons.attribution),
+                  labelText: "Enter Registered Date",
+                  prefixIcon: Icon(Icons.date_range),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
                 ),
                 keyboardType: TextInputType.number,
                 onSaved: (value) {
-                  age = int.parse(value!);
+                  registeredDate = value!;
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter an age';
+                    return 'Please enter your business registered date';
                   }
                   return null;
                 },
@@ -119,18 +140,18 @@ class _CreateAccountState extends State<CreateAccount> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     int newId = BusinessRepo.getNextId();
-                    Staff newStaff = Staff(
-                      name: name,
+                    Business newBusiness = Business(
+                      businessName: businessName,
                       tax: tax,
-                      address: address,
-                      age: age,
+                      location: location,
+                      registeredDate: registeredDate,
+                      ownerName: ownerName,
                       id: newId,
                     );
-                    
-                    widget.createStaff(newStaff);
+                    widget.createBusiness(newBusiness);
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text("Account Created Successfully")));
-                    Navigator.pop(context, newStaff);
+                    Navigator.pop(context, newBusiness);
                   }
                 },
                 child: Text("Submit"),

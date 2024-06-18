@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/leave_model.dart';
-import 'package:flutter_application_1/service/allowance_service.dart';
-import 'package:flutter_application_1/widget/leave/update_leave_1.dart';
+import 'package:flutter_application_1/model/business.dart';
+import 'package:flutter_application_1/widget/business/update_business_detail.dart';
 
-class UpdateLeavePage extends StatefulWidget {
-  final AllowanceService allowanceService;
+class UpdateBusiness extends StatefulWidget {
+  final List<Business> businessList;
 
-  const UpdateLeavePage({super.key, required this.allowanceService});
+  const UpdateBusiness({Key? key, required this.businessList})
+      : super(key: key);
 
   @override
-  State<UpdateLeavePage> createState() => _UpdateLeavePageState();
+  State<UpdateBusiness> createState() => _UpdateBusinessState();
 }
 
-class _UpdateLeavePageState extends State<UpdateLeavePage> {
+class _UpdateBusinessState extends State<UpdateBusiness> {
   final _formKey = GlobalKey<FormState>();
   int? _id;
 
@@ -21,7 +21,7 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Update Leave"),
+        title: Text("Update Business"),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10),
@@ -32,7 +32,7 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
               TextFormField(
                 decoration: InputDecoration(
                   labelText: "Enter ID Number",
-                  prefixIcon: Icon(Icons.insert_drive_file),
+                  prefixIcon: Icon(Icons.attach_money),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -40,7 +40,7 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter an ID Number';
+                    return 'Please enter a ID Number';
                   }
                   if (int.tryParse(value) == null) {
                     return 'Please enter a valid number';
@@ -60,24 +60,21 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    if (_id != null && widget.allowanceService.isLeaveIdRegistered(_id!)) {
-                      Leave leave = widget.allowanceService.repo.leaveList
-                          .firstWhere((leave) => leave.id == _id);
+                    if (_id != null && _isidRegistered(_id!)) {
+                      Business business = widget.businessList
+                          .firstWhere((business) => business.id == _id);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => UpdateLeave(
-                            isLeaveIdRegistered: widget.allowanceService.isIdRegistered,
-                           
-                            leave: leave, updateLeaves: widget.allowanceService.updateLeaves,
+                          builder: (context) => UpdateOrganaization(
+                            business: business,
+                            updateBusiness: _updateBusiness,
                           ),
                         ),
-                      ).then((_) {
-                        setState(() {}); // Refresh the page to show updated data
-                      });
+                      );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Invalid ID number')),
+                        SnackBar(content: Text('Invalid id number')),
                       );
                     }
                   }
@@ -94,5 +91,17 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
     );
   }
 
- 
+  bool _isidRegistered(int id) {
+    return widget.businessList.any((business) => business.id == id);
+  }
+
+  void _updateBusiness(Business updatedBusiness) {
+    setState(() {
+      int index = widget.businessList
+          .indexWhere((business) => business.id == updatedBusiness.id);
+      if (index != -1) {
+        widget.businessList[index] = updatedBusiness;
+      }
+    });
+  }
 }

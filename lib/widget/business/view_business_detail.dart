@@ -1,28 +1,26 @@
 import 'package:flutter/material.dart';
-
-import 'package:flutter_application_1/model/staff.dart';
 import 'package:flutter_application_1/service/business_service.dart';
-import 'package:flutter_application_1/widget/staff/active_details.dart';
-import 'package:flutter_application_1/widget/staff/delete_details.dart';
+import 'package:flutter_application_1/widget/business/active_business.dart';
+import 'package:flutter_application_1/widget/business/delete_business_detail.dart';
 
-class Viewdetails extends StatefulWidget {
+class ViewBusinessDetail extends StatefulWidget {
   final BusinessService businessService;
 
-  Viewdetails({
+  ViewBusinessDetail({
     super.key,
     required this.businessService,
   });
 
   @override
-  State<Viewdetails> createState() => _ViewdetailsState();
+  State<ViewBusinessDetail> createState() => _ViewBusinessDetailState();
 }
 
-class _ViewdetailsState extends State<Viewdetails> {
+class _ViewBusinessDetailState extends State<ViewBusinessDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("View Details"),
+        title: Text("View Business Details"),
         backgroundColor: Colors.cyan,
       ),
       body: Center(
@@ -35,13 +33,14 @@ class _ViewdetailsState extends State<Viewdetails> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ActiveStaffDetails(
-                      activeStaff: widget.businessService.getStaffs(),
+                    builder: (context) => ActiveBusiness(
+                      activeBusiness:
+                          widget.businessService.getBusinessDetail(),
                     ),
                   ),
                 );
               },
-              child: Text("View Active Staff Details"),
+              child: Text("View Active Business Details"),
             ),
             SizedBox(
               height: 10,
@@ -53,12 +52,12 @@ class _ViewdetailsState extends State<Viewdetails> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => DeleteStaffDetails(
-                              deleteStaff:
-                                  widget.businessService.getRemovedStaffs(),
+                        builder: (context) => DeleteBusinessDetail(
+                              deleteBusiness: widget.businessService
+                                  .getAllRemovedBusiness(),
                             )));
               },
-              child: Text("View Deleted Staff Details"),
+              child: Text("View Deleted Business Details"),
             ),
           ],
         ),
