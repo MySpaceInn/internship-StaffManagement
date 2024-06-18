@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/business.dart';
 import 'package:flutter_application_1/model/staff.dart';
-import 'package:flutter_application_1/service/business_service.dart';
 import 'package:flutter_application_1/service/bussiness_repo.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -127,6 +126,7 @@ class _CreateAccountState extends State<CreateAccount> {
                       age: age,
                       id: newId,
                     );
+                    
                     widget.createStaff(newStaff);
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text("Account Created Successfully")));
