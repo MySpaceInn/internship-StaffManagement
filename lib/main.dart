@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/bottom_navigation_bar.dart';
 import 'package:flutter_application_1/service/allowance_service.dart';
 import 'package:flutter_application_1/service/business_service.dart';
-import 'package:flutter_application_1/service/roster_service.dart';
 
 void main() {
-  //runRoster();
-  //runStaff();
-//runLeave();
-runBusiness();
+  runMainPage();
 }
 
-void runRoster() {
-  RosterService roster = RosterService();
-  runApp(roster.getAppMenu());
+void runMainPage() {
+  MainPage getMainPage = MainPage();
+  runApp(getMainPage.getMainPage());
 }
 
 void runBusiness() {

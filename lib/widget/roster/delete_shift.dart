@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/service/roster_service.dart';
 
-class delete extends StatefulWidget {
+class Delete extends StatefulWidget {
   final RosterService service;
 
-  const delete({super.key, required this.service});
+  const Delete({super.key, required this.service});
 
   @override
-  State<delete> createState() => _DeleteState();
+  State<Delete> createState() => _DeleteState();
 }
 
-class _DeleteState extends State<delete> {
+class _DeleteState extends State<Delete> {
   final TextEditingController _controller = TextEditingController();
 
   @override

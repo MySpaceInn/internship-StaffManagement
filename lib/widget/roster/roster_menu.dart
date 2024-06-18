@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/model/shift.dart';
 import 'package:flutter_application_1/service/roster_service.dart';
 import 'package:flutter_application_1/widget/roster/create_shift.dart';
 import 'package:flutter_application_1/widget/roster/delete_shift.dart';
@@ -7,8 +8,10 @@ import 'package:flutter_application_1/widget/roster/list_shift.dart';
 import 'package:flutter_application_1/widget/roster/restore_shift.dart';
 import 'package:flutter_application_1/widget/roster/update_shift.dart';
 
-class Rostermenu extends StatelessWidget {
-  const Rostermenu({super.key, required this.service});
+List<Shift> shifts = [];
+
+class RosterMenu extends StatelessWidget {
+  const RosterMenu({super.key, required this.service});
   final RosterService service;
 
   @override
@@ -21,41 +24,7 @@ class Rostermenu extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            SizedBox(height: 20),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.cyanAccent,
-                  shadowColor: Colors.black,
-                  elevation: 5,
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  textStyle: TextStyle(fontSize: 20),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Create(service: service)));
-                },
-                child: Text("1. Create Shift")),
-            SizedBox(height: 10),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.cyanAccent,
-                  shadowColor: Colors.black,
-                  elevation: 5,
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  textStyle: TextStyle(fontSize: 20),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ListShift(Service: service)));
-                },
-                child: Text("2. List Shift")),
-            SizedBox(height: 10),
+            const SizedBox(height: 20),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.black,
@@ -64,7 +33,43 @@ class Rostermenu extends StatelessWidget {
                   elevation: 5,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  textStyle: TextStyle(fontSize: 20),
+                  textStyle: const TextStyle(fontSize: 20),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Create(service: service)));
+                },
+                child: const Text("1. Create Shift")),
+            const SizedBox(height: 10),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.cyanAccent,
+                  shadowColor: Colors.black,
+                  elevation: 5,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  textStyle: const TextStyle(fontSize: 20),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ListShift(Service: service)));
+                },
+                child: const Text("2. List Shift")),
+            const SizedBox(height: 10),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.cyanAccent,
+                  shadowColor: Colors.black,
+                  elevation: 5,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  textStyle: const TextStyle(fontSize: 20),
                 ),
                 onPressed: () {
                   Navigator.push(
@@ -74,7 +79,7 @@ class Rostermenu extends StatelessWidget {
                                 service: service,
                               )));
                 },
-                child: Text("3. Update Shift")),
+                child: const Text("3. Update Shift")),
             SizedBox(height: 10),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -89,7 +94,7 @@ class Rostermenu extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => delete(service: service)));
+                          builder: (context) => Delete(service: service)));
                 },
                 child: Text("4. Delete Shift")),
             SizedBox(height: 10),

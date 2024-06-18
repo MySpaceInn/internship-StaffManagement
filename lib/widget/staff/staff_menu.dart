@@ -64,7 +64,8 @@ class _StaffMenuState extends State<StaffMenu> {
                 );
               },
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                 margin: EdgeInsets.symmetric(vertical: 5),
                 decoration: BoxDecoration(
                   color: Colors.cyan,

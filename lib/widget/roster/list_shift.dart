@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/shift.dart';
+// import 'package:flutter_application_1/model/shift.dart';
 import 'package:flutter_application_1/widget/roster/active_shift.dart';
 import 'package:flutter_application_1/widget/roster/deleted_shift.dart';
 
@@ -7,7 +7,7 @@ import 'package:flutter_application_1/widget/roster/deleted_shift.dart';
 class ListShift extends StatefulWidget {
   ListShift({super.key, required this.Service});
   final Service;
-  List<Shift> shifts = [];
+  // List<Shift> shifts = [];
 
   @override
   State<ListShift> createState() => _listShiftState();
