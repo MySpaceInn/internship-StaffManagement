@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/leave_model.dart';
-import 'package:flutter_application_1/service/allowance_service.dart';
 
 class UpdateLeave extends StatefulWidget {
-  final AllowanceService allowanceService;
+final Function(Leave) updateLeaves;
+  final Function(int) isLeaveIdRegistered;
+
+
   final Leave leave;
 
   const UpdateLeave({
     Key? key,
-    required this.allowanceService,
-    required this.leave,
+    required this.updateLeaves,
+    required this.leave, required this.isLeaveIdRegistered, 
   }) : super(key: key);
 
   @override
@@ -37,6 +39,8 @@ class _UpdateLeaveState extends State<UpdateLeave> {
     _duration = widget.leave.duration;
     _type = widget.leave.type;
   }
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +157,7 @@ class _UpdateLeaveState extends State<UpdateLeave> {
         type: _type!,
         id: widget.leave.id,
       );
-      widget.allowanceService.updateLeaves(updatedLeave);
+      widget.updateLeaves(updatedLeave);
       Navigator.pop(context);
     }
   },

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/leave_model.dart';
-import 'package:flutter_application_1/service/allowance_service.dart';
 
 class ActiveLeaveDetails extends StatelessWidget {
-  final AllowanceService allowanceService; 
+  final List<Leave> activeLeave;
 
-  ActiveLeaveDetails({super.key, required this.allowanceService});
+  ActiveLeaveDetails({
+    super.key,
+    required this.activeLeave,
+  });
 
   @override
   Widget build(BuildContext context) {
-           List<Leave>activeLeave = allowanceService.getActiveLeaves() ;
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Active Leave Details'),
@@ -25,7 +25,8 @@ class ActiveLeaveDetails extends StatelessWidget {
                   return ListTile(
                     title: Text(item.name),
                     subtitle: Text(
-                        'ID: ${item.id},duration: ${item.duration} name: ${item.name}, Address: ${item.address}, type: ${item.type}'),
+                      'ID: ${item.id}, Duration: ${item.duration}, Name: ${item.name}, Address: ${item.address}, Type: ${item.type}',
+                    ),
                   );
                 },
               ),

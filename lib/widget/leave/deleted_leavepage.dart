@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/leave_model.dart';
-import 'package:flutter_application_1/service/allowance_service.dart';
 
 class DeletedLeaveDetails extends StatelessWidget {
-  final AllowanceService allowanceService;
+  final List<Leave> removedLeave;
 
-  DeletedLeaveDetails({required this.allowanceService,});
+  DeletedLeaveDetails({required this.removedLeave});
 
   @override
   Widget build(BuildContext context) {
-    List<Leave>removedLeave=allowanceService.getRemovedLeave();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
@@ -18,15 +16,16 @@ class DeletedLeaveDetails extends StatelessWidget {
       body: Center(
         child: removedLeave.isEmpty
             ? Text('There are no deleted Leave details!')
-            : ListView.builder(
-              
+            : ListView.separated(
                 itemCount: removedLeave.length,
+                separatorBuilder: (context, index) => Divider(),
                 itemBuilder: (context, index) {
-                  Leave iteam=(removedLeave[index]);
+                  Leave item = removedLeave[index];
                   return ListTile(
-                    title: Text(iteam.name),
+                    title: Text(item.name),
                     subtitle: Text(
-                        'ID: ${iteam.id} duration: ${iteam.duration}, Address: ${iteam.address}, type: ${iteam.type}'),
+                      'ID: ${item.id}, Duration: ${item.duration}, Address: ${item.address}, Type: ${item.type}',
+                    ),
                   );
                 },
               ),

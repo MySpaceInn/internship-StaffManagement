@@ -23,14 +23,14 @@ class _AllowanceMenuState extends State<AllowanceMenu> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 10),
+        const    SizedBox(height: 10),
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => CreateAllowance(
-                      allowanceService: widget.allowanceService,
+                      createAllowance: widget.allowanceService.createAllowance,
                     ),
                   ),
                 );
@@ -42,7 +42,7 @@ class _AllowanceMenuState extends State<AllowanceMenu> {
                   color: Colors.lightBlue,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Text(
+                child: const Text(
                   "Create Allowance",
                   style: TextStyle(
                     color: Colors.white,
@@ -57,7 +57,7 @@ class _AllowanceMenuState extends State<AllowanceMenu> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => UpdateAllowance(
-                      allowanceService: widget.allowanceService,
+                      allowanceService: widget.allowanceService, allowanceList: widget.allowanceService.getAllowance(),
                     ),
                   ),
                 );
@@ -69,7 +69,7 @@ class _AllowanceMenuState extends State<AllowanceMenu> {
                   color: Colors.lightBlue,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Text(
+                child: const Text(
                   "Update Allowance",
                   style: TextStyle(
                     color: Colors.white,
@@ -77,14 +77,17 @@ class _AllowanceMenuState extends State<AllowanceMenu> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+          const  SizedBox(height: 10),
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => DeleteAllowance(
-                      allowanceService: widget.allowanceService,
+                      isIdRegistered: widget.allowanceService.isIdRegistered,
+                      removeAllowance: widget.allowanceService.removeAllowance,
+                      removedAllowances:
+                          widget.allowanceService.getRemovedAllowance(),
                     ),
                   ),
                 );
@@ -96,7 +99,7 @@ class _AllowanceMenuState extends State<AllowanceMenu> {
                   color: Colors.lightBlue,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Text(
+                child: const Text(
                   "Remove Allowance",
                   style: TextStyle(
                     color: Colors.white,
@@ -104,15 +107,18 @@ class _AllowanceMenuState extends State<AllowanceMenu> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+          const  SizedBox(height: 10),
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        RestoreAllowance(allowanceService: widget.allowanceService),
-                  ),
+                      builder: (context) => RestoreAllowance(
+                            getRemovedAllowanceById:
+                                widget.allowanceService.getRemovedAllowanceById,
+                            restoreAllowance:
+                                widget.allowanceService.restoreAllowance,
+                          )),
                 );
               },
               child: Container(
@@ -122,7 +128,7 @@ class _AllowanceMenuState extends State<AllowanceMenu> {
                   color: Colors.lightBlue,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Text(
+                child:const Text(
                   "Restore Account",
                   style: TextStyle(
                     color: Colors.white,
@@ -130,14 +136,14 @@ class _AllowanceMenuState extends State<AllowanceMenu> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+          const  SizedBox(height: 10),
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        ViewAllowanceDetail(allowanceService: widget.allowanceService),
+                    builder: (context) => ViewAllowanceDetail(
+                        allowanceService: widget.allowanceService),
                   ),
                 );
               },
@@ -148,7 +154,7 @@ class _AllowanceMenuState extends State<AllowanceMenu> {
                   color: Colors.lightBlue,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Text(
+                child: const Text(
                   "View Allowance Details",
                   style: TextStyle(
                     color: Colors.white,

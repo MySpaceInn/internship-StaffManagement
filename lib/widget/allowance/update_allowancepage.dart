@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/allowance_model.dart';
-import 'package:flutter_application_1/service/allowance_service.dart';
 
 class UpdateAllowancePage extends StatefulWidget {
-  final AllowanceService allowanceService;
+  
+  final Function(Allowance) updateAllowances;
+  final Function(int) isIdRegistered;
   final Allowance allowance;
 
   const UpdateAllowancePage({
     Key? key,
-    required this.allowanceService,
+    required this.updateAllowances,
+    required this.isIdRegistered,
     required this.allowance,
   }) : super(key: key);
 
@@ -21,7 +23,7 @@ class _UpdateAllowancePageState extends State<UpdateAllowancePage> {
   late String name;
   late String address;
   late String dateIssued;
-  late String amount; 
+  late String amount;
   String? type;
 
   List<String> allowanceTypes = [
@@ -38,7 +40,7 @@ class _UpdateAllowancePageState extends State<UpdateAllowancePage> {
     type = widget.allowance.type;
     dateIssued = widget.allowance.dateIssued;
     address = widget.allowance.address;
-    amount = widget.allowance.amount; 
+    amount = widget.allowance.amount;
   }
 
   @override
@@ -46,7 +48,7 @@ class _UpdateAllowancePageState extends State<UpdateAllowancePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Edit Allowance Details"),
+        title:const Text("Edit Allowance Details"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -65,7 +67,7 @@ class _UpdateAllowancePageState extends State<UpdateAllowancePage> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+            const  SizedBox(height: 20),
               TextFormField(
                 initialValue: name,
                 decoration: InputDecoration(
@@ -85,7 +87,7 @@ class _UpdateAllowancePageState extends State<UpdateAllowancePage> {
                   name = value!;
                 },
               ),
-              SizedBox(height: 20),
+           const   SizedBox(height: 20),
               TextFormField(
                 initialValue: address,
                 decoration: InputDecoration(
@@ -105,7 +107,7 @@ class _UpdateAllowancePageState extends State<UpdateAllowancePage> {
                   address = value!;
                 },
               ),
-              SizedBox(height: 20),
+           const   SizedBox(height: 20),
               TextFormField(
                 initialValue: amount,
                 decoration: InputDecoration(
@@ -126,7 +128,7 @@ class _UpdateAllowancePageState extends State<UpdateAllowancePage> {
                   amount = value!;
                 },
               ),
-              SizedBox(height: 20),
+          const    SizedBox(height: 20),
               DropdownButtonFormField<String>(
                 value: type,
                 decoration: InputDecoration(
@@ -154,7 +156,7 @@ class _UpdateAllowancePageState extends State<UpdateAllowancePage> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+       const       SizedBox(height: 20),
               TextFormField(
                 initialValue: dateIssued,
                 decoration: InputDecoration(
@@ -174,7 +176,7 @@ class _UpdateAllowancePageState extends State<UpdateAllowancePage> {
                   dateIssued = value!;
                 },
               ),
-              SizedBox(height: 20),
+         const     SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -187,7 +189,7 @@ class _UpdateAllowancePageState extends State<UpdateAllowancePage> {
                       address: address,
                       amount: amount,
                     );
-                    widget.allowanceService.updateAllowances(updatedAllowance);
+                    widget.updateAllowances(updatedAllowance);
                     Navigator.pop(context);
                   }
                 },
@@ -197,6 +199,8 @@ class _UpdateAllowancePageState extends State<UpdateAllowancePage> {
                 ),
                 child: Text("Update"),
               ),
+              SizedBox(height: 20),
+             
             ],
           ),
         ),

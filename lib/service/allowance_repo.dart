@@ -5,10 +5,8 @@ class AllowanceRepo {
   List<Allowance> allowanceList = [];
   List<Allowance> removedAllowanceList = [];
 
-
-   List<Leave> leaveList = [];
+  List<Leave> leaveList = [];
   List<Leave> removedLeaveList = [];
-
 
   static int _nextId = 10;
 
@@ -19,7 +17,8 @@ class AllowanceRepo {
   List<Allowance> getAllAllowances() {
     return allowanceList;
   }
-  List<Leave>getAllLeaves(){
+
+  List<Leave> getAllLeaves() {
     return leaveList;
   }
 
@@ -44,8 +43,9 @@ class AllowanceRepo {
   List<Allowance> getAllRemovedAllowances() {
     return removedAllowanceList;
   }
-  List<Leave> getAllRemovedLeaves(){
-return removedLeaveList;
+
+  List<Leave> getAllRemovedLeaves() {
+    return removedLeaveList;
   }
 
   int getTotalDeletedAllowanceNumber() {
@@ -71,18 +71,43 @@ return removedLeaveList;
     removedLeaveList.remove(leave);
     leaveList.add(leave);
   }
+
   void updateLeave(Leave updatedLeave) {
-  int index = leaveList.indexWhere((leave) => leave.id == updatedLeave.id);
-  if (index != -1) {
-    leaveList[index] = updatedLeave;
+    int index = leaveList.indexWhere((leave) => leave.id == updatedLeave.id);
+    if (index != -1) {
+      leaveList[index] = updatedLeave;
+    }
   }
-}
-void updateAllowannce(Allowance updatedAllowance){
-   
-      int index = allowanceList
-          .indexWhere((allowance) => allowance.id == updatedAllowance.id);
-      if (index != -1) {
-        allowanceList[index] = updatedAllowance;
-      }
-}
+
+  void updateAllowannce(Allowance updatedAllowance) {
+    int index = allowanceList
+        .indexWhere((allowance) => allowance.id == updatedAllowance.id);
+    if (index != -1) {
+      allowanceList[index] = updatedAllowance;
+    }
+  }
+
+  bool isIdRegistered(int id) {
+    return allowanceList.any((allowance) => allowance.id == id);
+  }
+
+  bool isLeaveIdRegistered(int id) {
+    return leaveList.any((leave) => leave.id == id);
+  }
+
+  Allowance? getRemovedAllowanceById(int id) {
+    try {
+      return removedAllowanceList.firstWhere((allowance) => allowance.id == id);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Leave? getRemovedLeaveById(int id) {
+    try {
+      return removedLeaveList.firstWhere((leave) => leave.id == id);
+    } catch (e) {
+      return null;
+    }
+  }
 }

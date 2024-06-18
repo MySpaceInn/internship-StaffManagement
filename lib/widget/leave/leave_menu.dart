@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/leave_model.dart';
 import 'package:flutter_application_1/service/allowance_service.dart';
 import 'package:flutter_application_1/widget/leave/create_leave_Page.dart';
 import 'package:flutter_application_1/widget/leave/remove_leavepage.dart';
@@ -20,29 +19,7 @@ class LeaveMenu extends StatefulWidget {
 }
 
 class _LeaveMenuState extends State<LeaveMenu> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void addleave(Leave leave) {
-    setState(() {
-      widget.allowanceService.repo.addLeave(leave);
-    });
-  }
-
-  void removeleave(int tax) {
-    setState(() {
-      Leave? leave = widget.allowanceService.repo.leaveList.firstWhere(
-        (leave) => leave.id == leave.id,
-      );
-      if (leave != null) {
-        widget.allowanceService.repo.leaveList.remove(leave);
-        widget.allowanceService.repo.removedLeaveList.add(leave);
-      }
-    });
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +38,7 @@ class _LeaveMenuState extends State<LeaveMenu> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => CreateLeave(
-                      allowanceService: widget.allowanceService,
+                    createLeave: widget.allowanceService.createLeave
                     ),
                   ),
                 );
@@ -114,7 +91,14 @@ class _LeaveMenuState extends State<LeaveMenu> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        DeleteLeave(allowanceService: widget.allowanceService),
+                        DeleteLeave(
+                          isLeaveIdRegistered:widget.allowanceService.isIdRegistered ,
+                          removeLeave: widget.allowanceService.removeLeave,
+
+
+
+
+                        ),
                   ),
                 );
               },
@@ -140,7 +124,11 @@ class _LeaveMenuState extends State<LeaveMenu> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        RestoreLeave(allowanceService: widget.allowanceService),
+                        RestoreLeave(
+getRemovedLeaveById:widget.allowanceService.getRemovedLeaveById ,
+restoreLeave:widget.allowanceService.restoreLeave ,
+
+                        ),
                   ),
                 );
               },

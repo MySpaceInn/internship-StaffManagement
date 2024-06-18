@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/allowance_model.dart';
-import 'package:flutter_application_1/service/allowance_service.dart';
 
 class CreateAllowance extends StatefulWidget {
-  final AllowanceService allowanceService;
+    final Function(Allowance) createAllowance;
 
-  const CreateAllowance({Key? key, required this.allowanceService}) : super(key: key);
+
+   CreateAllowance({Key? key, required this.createAllowance}) : super(key: key);
 
   @override
   _CreateAllowanceState createState() => _CreateAllowanceState();
@@ -59,7 +59,7 @@ class _CreateAllowanceState extends State<CreateAllowance> {
                     return null;
                   },
                 ),
-                SizedBox(height: 20),
+              const  SizedBox(height: 20),
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: "Enter Amount",
@@ -79,7 +79,7 @@ class _CreateAllowanceState extends State<CreateAllowance> {
                     return null;
                   },
                 ),
-                SizedBox(height: 15),
+            const    SizedBox(height: 15),
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: "Enter Address",
@@ -98,7 +98,7 @@ class _CreateAllowanceState extends State<CreateAllowance> {
                     return null;
                   },
                 ),
-                SizedBox(height: 15),
+           const     SizedBox(height: 15),
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: "Enter Date Issued",
@@ -118,7 +118,7 @@ class _CreateAllowanceState extends State<CreateAllowance> {
                     return null;
                   },
                 ),
-                SizedBox(height: 15),
+           const     SizedBox(height: 15),
                 DropdownButtonFormField<String>(
                   decoration: InputDecoration(
                     labelText: 'Select Type',
@@ -146,7 +146,7 @@ class _CreateAllowanceState extends State<CreateAllowance> {
                     return null;
                   },
                 ),
-                SizedBox(height: 15),
+             const   SizedBox(height: 15),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -164,14 +164,14 @@ class _CreateAllowanceState extends State<CreateAllowance> {
                         dateIssued: dateIssued,
                         type: type!,
                       );
-                      widget.allowanceService.addAllowance(newAllowance);
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("Allowance Created Successfully"),
+                      widget.createAllowance(newAllowance);
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content:  Text("Allowance Created Successfully"),
                       ));
                       Navigator.pop(context, newAllowance);
                     }
                   },
-                  child: Text("Submit"),
+                  child:const Text("Submit"),
                 ),
               ],
             ),

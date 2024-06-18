@@ -5,9 +5,13 @@ import 'package:flutter_application_1/widget/allowance/update_allowancepage.dart
 
 class UpdateAllowance extends StatefulWidget {
   final AllowanceService allowanceService;
+  final List<Allowance> allowanceList;
 
-  const UpdateAllowance({Key? key, required this.allowanceService, })
-      : super(key: key);
+  const UpdateAllowance({
+    Key? key,
+    required this.allowanceService,
+    required this.allowanceList,
+  }) : super(key: key);
 
   @override
   State<UpdateAllowance> createState() => _UpdateAllowanceState();
@@ -22,7 +26,7 @@ class _UpdateAllowanceState extends State<UpdateAllowance> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Update Allowance"),
+        title: const Text("Update Allowance"),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10),
@@ -52,7 +56,7 @@ class _UpdateAllowanceState extends State<UpdateAllowance> {
                   _id = int.parse(value!);
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.lightBlue,
@@ -61,14 +65,15 @@ class _UpdateAllowanceState extends State<UpdateAllowance> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    if (_id != null && _isIdRegistered(_id!)) {
-                      Allowance allowance = widget.allowanceService.repo.allowanceList
+                    if (_id != null && widget.allowanceService.isIdRegistered(_id!)) {
+                      Allowance allowance = widget.allowanceList
                           .firstWhere((allowance) => allowance.id == _id);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => UpdateAllowancePage(
-                            allowanceService: widget.allowanceService,
+                            isIdRegistered: widget.allowanceService.isIdRegistered,
+                            updateAllowances: widget.allowanceService.updateAllowances,
                             allowance: allowance,
                           ),
                         ),
@@ -77,12 +82,12 @@ class _UpdateAllowanceState extends State<UpdateAllowance> {
                       });
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Invalid ID number')),
+                        const SnackBar(content: Text('Invalid ID number')),
                       );
                     }
                   }
                 },
-                child: Text(
+                child: const Text(
                   "Submit",
                   style: TextStyle(color: Colors.black),
                 ),
@@ -92,9 +97,5 @@ class _UpdateAllowanceState extends State<UpdateAllowance> {
         ),
       ),
     );
-  }
-
-  bool _isIdRegistered(int id) {
-    return widget.allowanceService.repo.allowanceList.any((allowance) => allowance.id == id);
   }
 }

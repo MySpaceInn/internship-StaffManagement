@@ -60,15 +60,16 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    if (_id != null && _isIdRegistered(_id!)) {
+                    if (_id != null && widget.allowanceService.isLeaveIdRegistered(_id!)) {
                       Leave leave = widget.allowanceService.repo.leaveList
                           .firstWhere((leave) => leave.id == _id);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => UpdateLeave(
-                            allowanceService: widget.allowanceService,
-                            leave: leave,
+                            isLeaveIdRegistered: widget.allowanceService.isIdRegistered,
+                           
+                            leave: leave, updateLeaves: widget.allowanceService.updateLeaves,
                           ),
                         ),
                       ).then((_) {
@@ -93,7 +94,5 @@ class _UpdateLeavePageState extends State<UpdateLeavePage> {
     );
   }
 
-  bool _isIdRegistered(int id) {
-    return widget.allowanceService.repo.leaveList.any((leave) => leave.id == id);
-  }
+ 
 }

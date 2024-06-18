@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/leave_model.dart';
-import 'package:flutter_application_1/service/allowance_service.dart';
 
 
 class RestoreLeave extends StatefulWidget {
-  final AllowanceService allowanceService;
+  final Function(int) getRemovedLeaveById;
+  final Function(Leave) restoreLeave;
 
-  const RestoreLeave({super.key,  required this.allowanceService});
+  const RestoreLeave({super.key,  required this.getRemovedLeaveById,
+  required this.restoreLeave});
 
   @override
   State<RestoreLeave> createState() => _RestoreLeaveState();
@@ -58,9 +59,9 @@ class _RestoreLeaveState extends State<RestoreLeave> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     if (_id != null) {
-                      Leave? leave = _getLeaveByid(_id!);
+                      Leave? leave = widget.getRemovedLeaveById(_id!);
                       if (leave != null) {
-                        widget.allowanceService.repo.restore(leave);
+                        widget.restoreLeave(leave);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                               content: Text('Leave restored successfully')),
@@ -88,12 +89,5 @@ class _RestoreLeaveState extends State<RestoreLeave> {
     );
   }
 
-  Leave? _getLeaveByid(int id) {
-    try {
-      return widget.allowanceService.repo.removedLeaveList
-          .firstWhere((leave) => leave.id == id);
-    } catch (e) {
-      return null;
-    }
-  }
+ 
 }

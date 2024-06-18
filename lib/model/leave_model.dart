@@ -6,6 +6,8 @@ class Leave {
   String address;
   String type;
 
+
+  static int _nextLeaveId = 100;
   Leave({
     required this.name,
     required this.duration,
@@ -13,6 +15,9 @@ class Leave {
     required this.type,
     required this.id,
   });
+  static int getNextLeaveId() {
+    return _nextLeaveId++;
+  }
 
   @override
   String toString() {

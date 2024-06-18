@@ -1,14 +1,14 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/allowance_model.dart';
-import 'package:flutter_application_1/service/allowance_service.dart';
 
 class RestoreAllowance extends StatefulWidget {
-  final AllowanceService allowanceService;
+  final Function(int) getRemovedAllowanceById;
+  final Function(Allowance) restoreAllowance;
 
-  const RestoreAllowance({Key? key, required this.allowanceService})
-      : super(key: key);
+  const RestoreAllowance(
+      {super.key,
+      required this.getRemovedAllowanceById,
+      required this.restoreAllowance});
 
   @override
   State<RestoreAllowance> createState() => _RestoreAllowanceState();
@@ -23,7 +23,7 @@ class _RestoreAllowanceState extends State<RestoreAllowance> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Restore Allowance"),
+        title: const Text("Restore Allowance"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -53,32 +53,34 @@ class _RestoreAllowanceState extends State<RestoreAllowance> {
                   _id = int.parse(value!);
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue),
+                style:
+                    ElevatedButton.styleFrom(backgroundColor: Colors.lightBlue),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     if (_id != null) {
-                      Allowance? allowance = _getAllowanceByid(_id!);
+                      Allowance? allowance =
+                          widget.getRemovedAllowanceById(_id!);
                       if (allowance != null) {
-                        widget.allowanceService.restoreAllowance(allowance);
+                        widget.restoreAllowance(allowance);
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                               content: Text('Allowance restored successfully')),
                         );
                         Navigator.pop(context);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(
-                                  'Id not found in removed Allowance')),
+                          const SnackBar(
+                              content:
+                                  Text('Id not found in removed Allowance')),
                         );
                       }
                     }
                   }
                 },
-                child: Text(
+                child: const Text(
                   "Restore",
                   style: TextStyle(color: Colors.white),
                 ),
@@ -89,14 +91,4 @@ class _RestoreAllowanceState extends State<RestoreAllowance> {
       ),
     );
   }
-
-  Allowance? _getAllowanceByid(int id) {
-    try {
-      return widget.allowanceService.repo.removedAllowanceList
-          .firstWhere((allowance) => allowance.id == id);
-    } catch (e) {
-      return null;
-    }
-  }
 }
-

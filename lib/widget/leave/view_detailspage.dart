@@ -31,7 +31,7 @@ class _ViewLeavedetailsState extends State<ViewLeaveDetails> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ActiveLeaveDetails(
-                      allowanceService: widget.allowanceService,
+                    activeLeave: widget.allowanceService.getActiveLeave(),
                     ),
                   ),
                 );
@@ -49,7 +49,7 @@ class _ViewLeavedetailsState extends State<ViewLeaveDetails> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => DeletedLeaveDetails(
-                              allowanceService: widget.allowanceService,
+                           removedLeave:  widget.allowanceService.getRemovedLeave(),
                             )));
               },
               child: Text("View Deleted Leave Details"),

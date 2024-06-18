@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/leave_model.dart';
-import 'package:flutter_application_1/service/allowance_service.dart';
 
 class CreateLeave extends StatefulWidget {
-  final AllowanceService allowanceService;
+  final Function(Leave) createLeave;
 
-  const CreateLeave({Key? key, required this.allowanceService}) : super(key: key);
+   CreateLeave({Key? key, required this.createLeave}) : super(key: key);
 
   @override
   _CreateLeaveState createState() => _CreateLeaveState();
@@ -140,7 +139,7 @@ class _CreateLeaveState extends State<CreateLeave> {
                       type: type!,
                       id: newId,
                     );
-                    widget.allowanceService.createLeave(newLeave);
+                    widget.createLeave(newLeave);
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text("Leave Created Successfully"),
                     ));

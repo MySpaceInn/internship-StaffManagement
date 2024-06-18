@@ -6,24 +6,26 @@ import 'package:flutter_application_1/widget/leave/leave_menu.dart';
 
 
 class ActiveAllowance extends StatelessWidget {
-  final AllowanceService allowanceService; 
+  final List<Allowance> activeAllowances ;
+  final AllowanceService allowanceService;
 
   ActiveAllowance({
-    required this.allowanceService, 
+    required this.allowanceService,
+    required this.activeAllowances, 
   });
 
   @override
   Widget build(BuildContext context) {
-       List<Allowance>activeAllowances = allowanceService.getAllowance() ;
+      
 int activeAllowanceNumber=activeAllowances.length;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Active Allowance Details'),
+        title: const Text('Active Allowance Details'),
       ),
       body: Center(
         child:activeAllowances.isEmpty
-            ? Text(' No active allowance details!')
+            ? const Text(' No active allowance details!')
             : ListView.builder(
                 itemCount:activeAllowanceNumber,
                 itemBuilder: (context, index) {

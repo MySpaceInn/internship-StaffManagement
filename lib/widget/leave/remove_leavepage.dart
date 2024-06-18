@@ -1,16 +1,16 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/allowance_model.dart';
 import 'package:flutter_application_1/service/allowance_service.dart';
 import 'package:flutter_application_1/widget/leave/deleted_leavepage.dart';
 
 class DeleteLeave extends StatefulWidget {
-  final AllowanceService allowanceService;
+  final Function(int) removeLeave;
+    final bool Function(int) isLeaveIdRegistered;
+
 
   const DeleteLeave({
     super.key,
-    required this.allowanceService,
+    required this.removeLeave,
+    required this.isLeaveIdRegistered
   });
 
   @override
@@ -62,16 +62,9 @@ class _DeleteLeaveState extends State<DeleteLeave> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    if (_id != null && _isidRegistered(_id!)) {
-                      widget.allowanceService.removeLeave(_id!);
-                      Navigator.pop(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DeletedLeaveDetails(
-                            allowanceService: widget.allowanceService, 
-                          ),
-                        ),
-                      );
+                    if (_id != null && widget.isLeaveIdRegistered(_id!)) {
+                      widget.removeLeave(_id!);
+                     
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("Deleted Successfully")));
                     } else {
@@ -93,7 +86,5 @@ class _DeleteLeaveState extends State<DeleteLeave> {
     );
   }
 
-  bool _isidRegistered(int id) {
-    return widget.allowanceService.repo.leaveList.any((leave) => leave.id == id);
-  }
+ 
 }
