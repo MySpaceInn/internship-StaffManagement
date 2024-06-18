@@ -14,8 +14,20 @@ void runRoster() {
   runApp(roster.getAppMenu());
 }
 
-void runStaff() {
-  runApp(BusinessService().getAppMenu());
+void runBusiness() {
+  runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.cyan,
+            title: const Text("Business Management"),
+          ),
+          body: BusinessService().getBusinessHome())));
 }
 void runAllowance(){
  AllowanceService allowance = AllowanceService();

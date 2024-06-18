@@ -1,52 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/staff.dart';
 import 'package:flutter_application_1/service/business_service.dart';
-import 'package:flutter_application_1/widget/staff/create_account.dart';
-import 'package:flutter_application_1/widget/staff/remove_account.dart';
-import 'package:flutter_application_1/widget/staff/restore_account.dart';
-import 'package:flutter_application_1/widget/staff/update_account.dart';
-import 'package:flutter_application_1/widget/staff/view_details.dart';
+import 'package:flutter_application_1/widget/business/create_business.dart';
+import 'package:flutter_application_1/widget/business/remove_business.dart';
+import 'package:flutter_application_1/widget/business/restore_business.dart';
+import 'package:flutter_application_1/widget/business/update_business.dart';
+import 'package:flutter_application_1/widget/business/view_business_detail.dart';
 
-class StaffMenu extends StatefulWidget {
-  final BusinessService businessService;
+class BusinessMenu extends StatefulWidget {
+  final BusinessService service;
 
-  StaffMenu({Key? key, required this.businessService}) : super(key: key);
+  BusinessMenu({Key? key, required this.service}) : super(key: key);
 
   @override
-  _StaffMenuState createState() => _StaffMenuState();
+  _BusinessMenuState createState() => _BusinessMenuState();
 }
 
-class _StaffMenuState extends State<StaffMenu> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void addStaff(Staff staff) {
-    setState(() {
-      widget.businessService.addStaff(staff);
-    });
-  }
-
-  void removeStaff(int tax) {
-    setState(() {
-      Staff? staff = widget.businessService.getStaffs().firstWhere(
-            (staff) => staff.tax == tax,
-          );
-      if (staff != null) {
-        widget.businessService.getStaffs().remove(staff);
-        widget.businessService.getRemovedStaffs().add(staff);
-      }
-    });
-  }
-
+class _BusinessMenuState extends State<BusinessMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.cyan,
-        title: Text("Staff Management"),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -57,8 +29,8 @@ class _StaffMenuState extends State<StaffMenu> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CreateAccount(
-                      createStaff: widget.businessService.addStaff,
+                    builder: (context) => CreateBusiness(
+                      createBusiness: widget.service.add,
                     ),
                   ),
                 );
@@ -71,7 +43,7 @@ class _StaffMenuState extends State<StaffMenu> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  "Create Account",
+                  "Create Business",
                   style: TextStyle(
                     color: Colors.black,
                   ),
@@ -83,62 +55,62 @@ class _StaffMenuState extends State<StaffMenu> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        UpdateAccount(businessService: widget.businessService),
-                  ),
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                margin: EdgeInsets.symmetric(vertical: 5),
-                decoration: BoxDecoration(
-                  color: Colors.cyan,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  "Update Account",
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Deleteaccount(
-                        getRemovedStaff:
-                            widget.businessService.getRemovedStaffs,
-                        removeStaffById: widget.businessService.removeStaff),
-                  ),
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                margin: EdgeInsets.symmetric(vertical: 5),
-                decoration: BoxDecoration(
-                  color: Colors.cyan,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  "Remove Account",
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => RestoreAccount(
-                      restoreStaff: widget.businessService.restoreStaff,
-                      removedStaffs: widget.businessService.getRemovedStaffs(),
+                    builder: (context) => UpdateBusiness(
+                      businessList: widget.service.getBusinessDetail(),
                     ),
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                margin: EdgeInsets.symmetric(vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.cyan,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  "Update Business",
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DeleteBusiness(
+                      businessService: widget.service,
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                margin: EdgeInsets.symmetric(vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.cyan,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  "Remove Business",
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RestoreBusiness(
+                        getRemovedBusinessById:
+                            widget.service.getRemovedBussinessById,
+                        restoreBusiness: widget.service.restoreBusiness),
                   ),
                 );
               },
@@ -163,7 +135,7 @@ class _StaffMenuState extends State<StaffMenu> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        Viewdetails(businessService: widget.businessService),
+                        ViewBusinessDetail(businessService: widget.service),
                   ),
                 );
               },
@@ -175,7 +147,7 @@ class _StaffMenuState extends State<StaffMenu> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  "View Staff Details",
+                  "View Business Details",
                   style: TextStyle(
                     color: Colors.black,
                   ),

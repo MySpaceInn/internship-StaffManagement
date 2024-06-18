@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/staff.dart';
 import 'package:flutter_application_1/service/business_service.dart';
-import 'package:flutter_application_1/widget/staff/update_account1.dart';
+import 'package:flutter_application_1/widget/business/delete_business_detail.dart';
 
-class UpdateAccount extends StatefulWidget {
+class DeleteBusiness extends StatefulWidget {
   final BusinessService businessService;
 
-  const UpdateAccount({Key? key, required this.businessService})
+  const DeleteBusiness({Key? key, required this.businessService})
       : super(key: key);
 
   @override
-  State<UpdateAccount> createState() => _UpdateAccountState();
+  State<DeleteBusiness> createState() => _DeleteBusinessState();
 }
 
-class _UpdateAccountState extends State<UpdateAccount> {
+class _DeleteBusinessState extends State<DeleteBusiness> {
   final _formKey = GlobalKey<FormState>();
   int? _id;
 
@@ -22,7 +21,7 @@ class _UpdateAccountState extends State<UpdateAccount> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Update Account"),
+        title: Text("Remove Business"),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10),
@@ -32,8 +31,8 @@ class _UpdateAccountState extends State<UpdateAccount> {
             children: [
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: "Enter ID Number",
-                  prefixIcon: Icon(Icons.attach_money),
+                  prefixIcon: Icon(Icons.numbers),
+                  labelText: "Enter Registered ID Number To Delete",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -41,7 +40,7 @@ class _UpdateAccountState extends State<UpdateAccount> {
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a ID Number';
+                    return 'Please enter a id number';
                   }
                   if (int.tryParse(value) == null) {
                     return 'Please enter a valid number';
@@ -54,26 +53,15 @@ class _UpdateAccountState extends State<UpdateAccount> {
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.cyan,
-                  foregroundColor: Colors.black,
-                ),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.cyan),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     if (_id != null && _isidRegistered(_id!)) {
-                      Staff staff = widget.businessService
-                          .getStaffs()
-                          .firstWhere((staff) => staff.id == _id);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Updatename(
-                            staff: staff,
-                            updateStaff: _updateStaff,
-                          ),
-                        ),
-                      );
+                      widget.businessService.remove(_id!);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Deleted Successfully")));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Invalid id number')),
@@ -82,7 +70,7 @@ class _UpdateAccountState extends State<UpdateAccount> {
                   }
                 },
                 child: Text(
-                  "Submit",
+                  "Delete",
                   style: TextStyle(color: Colors.black),
                 ),
               ),
@@ -94,17 +82,8 @@ class _UpdateAccountState extends State<UpdateAccount> {
   }
 
   bool _isidRegistered(int id) {
-    return widget.businessService.getStaffs().any((staff) => staff.id == id);
-  }
-
-  void _updateStaff(Staff updatedStaff) {
-    setState(() {
-      int index = widget.businessService
-          .getStaffs()
-          .indexWhere((staff) => staff.id == updatedStaff.id);
-      if (index != -1) {
-        widget.businessService.getStaffs()[index] = updatedStaff;
-      }
-    });
+    return widget.businessService
+        .getBusinessDetail()
+        .any((business) => business.id == id);
   }
 }

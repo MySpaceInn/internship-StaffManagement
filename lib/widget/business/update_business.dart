@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/staff.dart';
-import 'package:flutter_application_1/service/business_service.dart';
-import 'package:flutter_application_1/widget/staff/update_account1.dart';
+import 'package:flutter_application_1/model/business.dart';
+import 'package:flutter_application_1/widget/business/update_business_detail.dart';
 
-class UpdateAccount extends StatefulWidget {
-  final BusinessService businessService;
+class UpdateBusiness extends StatefulWidget {
+  final List<Business> businessList;
 
-  const UpdateAccount({Key? key, required this.businessService})
+  const UpdateBusiness({Key? key, required this.businessList})
       : super(key: key);
 
   @override
-  State<UpdateAccount> createState() => _UpdateAccountState();
+  State<UpdateBusiness> createState() => _UpdateBusinessState();
 }
 
-class _UpdateAccountState extends State<UpdateAccount> {
+class _UpdateBusinessState extends State<UpdateBusiness> {
   final _formKey = GlobalKey<FormState>();
   int? _id;
 
@@ -22,7 +21,7 @@ class _UpdateAccountState extends State<UpdateAccount> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Update Account"),
+        title: Text("Update Business"),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10),
@@ -62,15 +61,14 @@ class _UpdateAccountState extends State<UpdateAccount> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     if (_id != null && _isidRegistered(_id!)) {
-                      Staff staff = widget.businessService
-                          .getStaffs()
-                          .firstWhere((staff) => staff.id == _id);
+                      Business business = widget.businessList
+                          .firstWhere((business) => business.id == _id);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Updatename(
-                            staff: staff,
-                            updateStaff: _updateStaff,
+                          builder: (context) => UpdateOrganaization(
+                            business: business,
+                            updateBusiness: _updateBusiness,
                           ),
                         ),
                       );
@@ -94,16 +92,15 @@ class _UpdateAccountState extends State<UpdateAccount> {
   }
 
   bool _isidRegistered(int id) {
-    return widget.businessService.getStaffs().any((staff) => staff.id == id);
+    return widget.businessList.any((business) => business.id == id);
   }
 
-  void _updateStaff(Staff updatedStaff) {
+  void _updateBusiness(Business updatedBusiness) {
     setState(() {
-      int index = widget.businessService
-          .getStaffs()
-          .indexWhere((staff) => staff.id == updatedStaff.id);
+      int index = widget.businessList
+          .indexWhere((business) => business.id == updatedBusiness.id);
       if (index != -1) {
-        widget.businessService.getStaffs()[index] = updatedStaff;
+        widget.businessList[index] = updatedBusiness;
       }
     });
   }
