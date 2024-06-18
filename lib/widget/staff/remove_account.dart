@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/business.dart';
-
 import 'package:flutter_application_1/model/staff.dart';
 import 'package:flutter_application_1/widget/staff/delete_details.dart';
 
 class Deleteaccount extends StatefulWidget {
-  final Business business;
+  final List<Staff> Function() getRemovedStaff;
+  final Function(int) removeStaffById;
 
   const Deleteaccount({
     super.key,
-    required this.business,
+    required this.getRemovedStaff,
+    required this.removeStaffById,
   });
 
   @override
@@ -37,7 +37,7 @@ class _DeleteaccountState extends State<Deleteaccount> {
               TextFormField(
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.attach_money),
-                  labelText: "Enter Registered TAX Number To Delete",
+                  labelText: "Enter ID Number To Delete",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -45,7 +45,7 @@ class _DeleteaccountState extends State<Deleteaccount> {
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a ID number';
+                    return 'Please enter an ID number';
                   }
                   if (int.tryParse(value) == null) {
                     return 'Please enter a valid number';
@@ -62,22 +62,25 @@ class _DeleteaccountState extends State<Deleteaccount> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    if (_id != null && _isidRegistered(_id!)) {
-                      widget.business.removeStaff(_id!);
-                      Navigator.pop(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DeleteStaffDetails(
-                            staffList: widget.business.removedStaffList,
+                    if (_id != null) {
+                      bool removed = widget.removeStaffById(_id!);
+                      if (removed) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DeleteStaffDetails(
+                              deleteStaff: widget.getRemovedStaff(),
+                            ),
                           ),
-                        ),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Deleted Successfully")));
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Invalid tax number')),
-                      );
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Deleted Successfully")),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Invalid ID number')),
+                        );
+                      }
                     }
                   }
                 },
@@ -91,9 +94,5 @@ class _DeleteaccountState extends State<Deleteaccount> {
         ),
       ),
     );
-  }
-
-  bool _isidRegistered(int id) {
-    return widget.business.staffList.any((staff) => staff.id == id);
   }
 }

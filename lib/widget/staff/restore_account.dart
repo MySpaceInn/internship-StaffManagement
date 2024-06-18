@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/business.dart';
 import 'package:flutter_application_1/model/staff.dart';
 
 class RestoreAccount extends StatefulWidget {
-  final Business business;
+  final Function(Staff) restoreStaff;
+  final List<Staff> removedStaffs;
 
-  const RestoreAccount({super.key, required this.business});
+  const RestoreAccount({
+    super.key,
+    required this.restoreStaff,
+    required this.removedStaffs,
+  });
 
   @override
   State<RestoreAccount> createState() => _RestoreAccountState();
@@ -31,7 +35,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
               TextFormField(
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.attach_money),
-                  labelText: "Enter TAX Number To Restore",
+                  labelText: "Enter ID Number To Restore",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -39,7 +43,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a ID number';
+                    return 'Please enter an ID number';
                   }
                   if (int.tryParse(value) == null) {
                     return 'Please enter a valid number';
@@ -57,9 +61,9 @@ class _RestoreAccountState extends State<RestoreAccount> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     if (_id != null) {
-                      Staff? staff = _getStaffByid(_id!);
+                      Staff? staff = _getStaffById(_id!);
                       if (staff != null) {
-                        widget.business.restoreStaff(staff);
+                        widget.restoreStaff(staff);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                               content: Text('Staff restored successfully')),
@@ -69,7 +73,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                               content:
-                                  Text('id number not found in removed staff')),
+                                  Text('ID number not found in removed staff')),
                         );
                       }
                     }
@@ -79,7 +83,7 @@ class _RestoreAccountState extends State<RestoreAccount> {
                   "Restore",
                   style: TextStyle(color: Colors.black),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -87,10 +91,9 @@ class _RestoreAccountState extends State<RestoreAccount> {
     );
   }
 
-  Staff? _getStaffByid(int id) {
+  Staff? _getStaffById(int id) {
     try {
-      return widget.business.removedStaffList
-          .firstWhere((staff) => staff.id == id);
+      return widget.removedStaffs.firstWhere((staff) => staff.id == id);
     } catch (e) {
       return null;
     }

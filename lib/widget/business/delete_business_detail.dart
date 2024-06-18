@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/business.dart';
+import 'package:flutter_application_1/service/business_service.dart';
+
+import '../../model/business.dart';
 
 class DeleteBusinessDetail extends StatelessWidget {
-  final List<Business> businessList;
+  final List<Business> deleteBusiness;
 
-  DeleteBusinessDetail({required this.businessList});
+  DeleteBusinessDetail({required this.deleteBusiness});
 
   @override
   Widget build(BuildContext context) {
@@ -14,15 +16,19 @@ class DeleteBusinessDetail extends StatelessWidget {
         title: Text('Deleted Business Details'),
       ),
       body: Center(
-        child: businessList.isEmpty
-            ? Text('There are no deleted Business details!')
+        child: deleteBusiness.isEmpty
+            ? Text('There are no active business details!')
             : ListView.builder(
-                itemCount: businessList.length,
+                itemCount: deleteBusiness.length,
                 itemBuilder: (context, index) {
+                  Business item = deleteBusiness[index];
                   return ListTile(
-                    title: Text(businessList[index].businessName),
-                    subtitle: Text(
-                        'ID: ${businessList[index].id} TAX: ${businessList[index].tax}, Location: ${businessList[index].location}, Registered Date: ${businessList[index].registeredDate}, Owner Name: ${businessList[index].ownerName}'),
+                    title: Text(item.businessName),
+                    subtitle: Text('''ID: ${item.id},
+                         TAX Number: ${item.tax},
+                          Location: ${item.location},
+                           Registered Date: ${item.registeredDate},
+                            Owner Name: ${item.ownerName}'''),
                   );
                 },
               ),

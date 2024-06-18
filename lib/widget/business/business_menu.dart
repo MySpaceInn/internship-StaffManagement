@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/business.dart';
 import 'package:flutter_application_1/service/business_service.dart';
 import 'package:flutter_application_1/widget/business/create_business.dart';
 import 'package:flutter_application_1/widget/business/remove_business.dart';
@@ -17,35 +16,6 @@ class BusinessMenu extends StatefulWidget {
 }
 
 class _BusinessMenuState extends State<BusinessMenu> {
-  List<Business> businessList = [];
-  List<Business> removedBusinessList = [];
-
-  @override
-  void initState() {
-    super.initState();
-    businessList = widget.service.businessList;
-    removedBusinessList = widget.service.removedBusinessList;
-  }
-
-  void addBusiness(Business business) {
-    setState(() {
-      businessList.add(business);
-      widget.service.businessList = businessList;
-    });
-  }
-
-  void removeBusiness(int id) {
-    setState(() {
-      Business? business = businessList.firstWhere(
-        (business) => business.id == id,
-      );
-      if (business != null) {
-        businessList.remove(business);
-        removedBusinessList.add(business);
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +30,7 @@ class _BusinessMenuState extends State<BusinessMenu> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => CreateBusiness(
-                      businessService: widget.service,
+                      createBusiness: widget.service.add,
                     ),
                   ),
                 );
@@ -86,7 +56,7 @@ class _BusinessMenuState extends State<BusinessMenu> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => UpdateBusiness(
-                      businessList: widget.service.businessList,
+                      businessList: widget.service.getBusinessDetail(),
                     ),
                   ),
                 );
@@ -137,8 +107,10 @@ class _BusinessMenuState extends State<BusinessMenu> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        RestoreBusiness(businessService: widget.service),
+                    builder: (context) => RestoreBusiness(
+                        getRemovedBusinessById:
+                            widget.service.getRemovedBussinessById,
+                        restoreBusiness: widget.service.restoreBusiness),
                   ),
                 );
               },

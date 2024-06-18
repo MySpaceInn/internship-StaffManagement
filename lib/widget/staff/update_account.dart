@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/business.dart';
 import 'package:flutter_application_1/model/staff.dart';
+import 'package:flutter_application_1/service/business_service.dart';
 import 'package:flutter_application_1/widget/staff/update_account1.dart';
 
 class UpdateAccount extends StatefulWidget {
-  final Business business;
+  final BusinessService businessService;
 
-  const UpdateAccount({Key? key, required this.business}) : super(key: key);
+  const UpdateAccount({Key? key, required this.businessService})
+      : super(key: key);
 
   @override
   State<UpdateAccount> createState() => _UpdateAccountState();
@@ -61,7 +62,8 @@ class _UpdateAccountState extends State<UpdateAccount> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     if (_id != null && _isidRegistered(_id!)) {
-                      Staff staff = widget.business.staffList
+                      Staff staff = widget.businessService
+                          .getStaffs()
                           .firstWhere((staff) => staff.id == _id);
                       Navigator.push(
                         context,
@@ -92,15 +94,16 @@ class _UpdateAccountState extends State<UpdateAccount> {
   }
 
   bool _isidRegistered(int id) {
-    return widget.business.staffList.any((staff) => staff.id == id);
+    return widget.businessService.getStaffs().any((staff) => staff.id == id);
   }
 
   void _updateStaff(Staff updatedStaff) {
     setState(() {
-      int index = widget.business.staffList
+      int index = widget.businessService
+          .getStaffs()
           .indexWhere((staff) => staff.id == updatedStaff.id);
       if (index != -1) {
-        widget.business.staffList[index] = updatedStaff;
+        widget.businessService.getStaffs()[index] = updatedStaff;
       }
     });
   }

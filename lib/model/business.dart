@@ -7,9 +7,9 @@ class Business {
   String ownerName;
   String location;
   String businessName;
-  List<Staff> staffList = [];
-  List<Staff> removedStaffList = [];
-  static int _nextStaffId = 100;
+  // List<Staff> staffList = [];
+  // List<Staff> removedStaffList = [];
+  // static int _nextStaffId = 100;
 
   Business({
     required this.id,
@@ -24,24 +24,24 @@ class Business {
 
   List<Business>? get removedBusinessList => null;
 
-  static int getStaffNextId() {
-    return _nextStaffId++;
-  }
+  // static int getStaffNextId() {
+  //   return _nextStaffId++;
+  // }
 
-  void addStaff(Staff staff) {
-    staffList.add(staff);
-  }
+  // void addStaff(Staff staff) {
+  //   staffList.add(staff);
+  // }
 
-  void removeStaff(int tax) {
-    Staff staff = staffList.firstWhere((staff) => staff.tax == tax);
-    staffList.remove(staff);
-    removedStaffList.add(staff);
-  }
+  // void removeStaff(int tax) {
+  //   Staff staff = staffList.firstWhere((staff) => staff.tax == tax);
+  //   staffList.remove(staff);
+  //   removedStaffList.add(staff);
+  // }
 
-  void restoreStaff(Staff staff) {
-    removedStaffList.remove(staff);
-    staffList.add(staff);
-  }
+  // void restoreStaff(Staff staff) {
+  //   removedStaffList.remove(staff);
+  //   staffList.add(staff);
+  // }
 
   @override
   String toString() {

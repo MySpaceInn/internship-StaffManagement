@@ -3,9 +3,13 @@ import 'package:flutter_application_1/model/business.dart';
 import 'package:flutter_application_1/service/business_service.dart';
 
 class RestoreBusiness extends StatefulWidget {
-  final BusinessService businessService;
+  final Function(int) getRemovedBusinessById;
+  final Function(Business) restoreBusiness;
 
-  const RestoreBusiness({Key? key, required this.businessService})
+  const RestoreBusiness(
+      {Key? key,
+      required this.getRemovedBusinessById,
+      required this.restoreBusiness})
       : super(key: key);
 
   @override
@@ -58,9 +62,9 @@ class _RestoreBusinessState extends State<RestoreBusiness> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     if (_id != null) {
-                      Business? business = _getBusinessByid(_id!);
+                      Business? business = widget.getRemovedBusinessById(_id!);
                       if (business != null) {
-                        widget.businessService.restoreBusiness(business);
+                        widget.restoreBusiness(business);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                               content: Text('Business restored successfully')),
@@ -86,14 +90,5 @@ class _RestoreBusinessState extends State<RestoreBusiness> {
         ),
       ),
     );
-  }
-
-  Business? _getBusinessByid(int id) {
-    try {
-      return widget.businessService.removedBusinessList
-          .firstWhere((business) => business.id == id);
-    } catch (e) {
-      return null;
-    }
   }
 }

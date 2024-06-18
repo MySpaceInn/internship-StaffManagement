@@ -58,16 +58,8 @@ class _DeleteBusinessState extends State<DeleteBusiness> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     if (_id != null && _isidRegistered(_id!)) {
-                      widget.businessService.removeBusiness(_id!);
-                      Navigator.pop(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DeleteBusinessDetail(
-                            businessList:
-                                widget.businessService.removedBusinessList,
-                          ),
-                        ),
-                      );
+                      widget.businessService.remove(_id!);
+
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("Deleted Successfully")));
                     } else {
@@ -90,7 +82,8 @@ class _DeleteBusinessState extends State<DeleteBusiness> {
   }
 
   bool _isidRegistered(int id) {
-    return widget.businessService.businessList
+    return widget.businessService
+        .getBusinessDetail()
         .any((business) => business.id == id);
   }
 }

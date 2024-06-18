@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/business.dart';
 import 'package:flutter_application_1/service/business_service.dart';
 import 'package:flutter_application_1/widget/business/active_business.dart';
 import 'package:flutter_application_1/widget/business/delete_business_detail.dart';
@@ -34,8 +33,10 @@ class _ViewBusinessDetailState extends State<ViewBusinessDetail> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        ActiveBusiness(businessService: widget.businessService),
+                    builder: (context) => ActiveBusiness(
+                      activeBusiness:
+                          widget.businessService.getBusinessDetail(),
+                    ),
                   ),
                 );
               },
@@ -52,8 +53,9 @@ class _ViewBusinessDetailState extends State<ViewBusinessDetail> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => DeleteBusinessDetail(
-                            businessList:
-                                widget.businessService.removedBusinessList)));
+                              deleteBusiness: widget.businessService
+                                  .getAllRemovedBusiness(),
+                            )));
               },
               child: Text("View Deleted Business Details"),
             ),

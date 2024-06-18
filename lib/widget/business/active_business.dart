@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/business.dart';
 import 'package:flutter_application_1/service/business_service.dart';
 import 'package:flutter_application_1/widget/staff/staff_menu.dart';
 
+import '../../model/business.dart';
+
 class ActiveBusiness extends StatelessWidget {
-  final BusinessService businessService; // Add StaffService as a parameter
+  final List<Business> activeBusiness;
 
   ActiveBusiness({
-    required this.businessService, // Initialize the StaffService
+    required this.activeBusiness,
   });
 
   @override
@@ -17,27 +18,26 @@ class ActiveBusiness extends StatelessWidget {
         title: Text('Active Business Details'),
       ),
       body: Center(
-        child: businessService.businessList.isEmpty
+        child: activeBusiness.isEmpty
             ? Text('There are no active business details!')
             : ListView.builder(
-                itemCount: businessService.businessList.length,
+                itemCount: activeBusiness.length,
                 itemBuilder: (context, index) {
+                  Business item = activeBusiness[index];
                   return ListTile(
-                    title:
-                        Text(businessService.businessList[index].businessName),
-                    subtitle:
-                        Text('''ID: ${businessService.businessList[index].id},
-                         TAX Number: ${businessService.businessList[index].tax},
-                          Location: ${businessService.businessList[index].location},
-                           Registered Date: ${businessService.businessList[index].registeredDate},
-                            Owner Name: ${businessService.businessList[index].ownerName}'''),
+                    title: Text(item.businessName),
+                    subtitle: Text('''ID: ${item.id},
+                         TAX Number: ${item.tax},
+                          Location: ${item.location},
+                           Registered Date: ${item.registeredDate},
+                            Owner Name: ${item.ownerName}'''),
                     trailing: ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => StaffMenu(
-                              business: businessService.businessList[index],
+                              businessService: BusinessService(),
                             ),
                           ),
                         );

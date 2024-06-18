@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/business.dart';
 import 'package:flutter_application_1/model/staff.dart';
+import 'package:flutter_application_1/service/business_service.dart';
 import 'package:flutter_application_1/widget/staff/create_account.dart';
 import 'package:flutter_application_1/widget/staff/remove_account.dart';
 import 'package:flutter_application_1/widget/staff/restore_account.dart';
@@ -8,9 +8,9 @@ import 'package:flutter_application_1/widget/staff/update_account.dart';
 import 'package:flutter_application_1/widget/staff/view_details.dart';
 
 class StaffMenu extends StatefulWidget {
-  final Business business;
+  final BusinessService businessService;
 
-  StaffMenu({Key? key, required this.business}) : super(key: key);
+  StaffMenu({Key? key, required this.businessService}) : super(key: key);
 
   @override
   _StaffMenuState createState() => _StaffMenuState();
@@ -24,18 +24,18 @@ class _StaffMenuState extends State<StaffMenu> {
 
   void addStaff(Staff staff) {
     setState(() {
-      widget.business.addStaff(staff);
+      widget.businessService.addStaff(staff);
     });
   }
 
   void removeStaff(int tax) {
     setState(() {
-      Staff? staff = widget.business.staffList.firstWhere(
-        (staff) => staff.tax == tax,
-      );
+      Staff? staff = widget.businessService.getStaffs().firstWhere(
+            (staff) => staff.tax == tax,
+          );
       if (staff != null) {
-        widget.business.staffList.remove(staff);
-        widget.business.removedStaffList.add(staff);
+        widget.businessService.getStaffs().remove(staff);
+        widget.businessService.getRemovedStaffs().add(staff);
       }
     });
   }
@@ -58,7 +58,7 @@ class _StaffMenuState extends State<StaffMenu> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => CreateAccount(
-                      business: widget.business,
+                      createStaff: widget.businessService.addStaff,
                     ),
                   ),
                 );
@@ -84,7 +84,7 @@ class _StaffMenuState extends State<StaffMenu> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        UpdateAccount(business: widget.business),
+                        UpdateAccount(businessService: widget.businessService),
                   ),
                 );
               },
@@ -108,8 +108,10 @@ class _StaffMenuState extends State<StaffMenu> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        Deleteaccount(business: widget.business),
+                    builder: (context) => Deleteaccount(
+                        getRemovedStaff:
+                            widget.businessService.getRemovedStaffs,
+                        removeStaffById: widget.businessService.removeStaff),
                   ),
                 );
               },
@@ -133,8 +135,10 @@ class _StaffMenuState extends State<StaffMenu> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        RestoreAccount(business: widget.business),
+                    builder: (context) => RestoreAccount(
+                      restoreStaff: widget.businessService.restoreStaff,
+                      removedStaffs: widget.businessService.getRemovedStaffs(),
+                    ),
                   ),
                 );
               },
@@ -158,10 +162,8 @@ class _StaffMenuState extends State<StaffMenu> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Viewdetails(
-                      staffList: widget.business.staffList,
-                      removedStaffList: widget.business.removedStaffList,
-                    ),
+                    builder: (context) =>
+                        Viewdetails(businessService: widget.businessService),
                   ),
                 );
               },

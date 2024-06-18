@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_application_1/model/staff.dart';
+import 'package:flutter_application_1/service/business_service.dart';
 import 'package:flutter_application_1/widget/staff/active_details.dart';
 import 'package:flutter_application_1/widget/staff/delete_details.dart';
 
 class Viewdetails extends StatefulWidget {
-  final List<Staff> staffList;
-  final List<Staff> removedStaffList;
+  final BusinessService businessService;
 
-  Viewdetails(
-      {super.key, required this.staffList, required this.removedStaffList});
+  Viewdetails({
+    super.key,
+    required this.businessService,
+  });
 
   @override
   State<Viewdetails> createState() => _ViewdetailsState();
@@ -34,7 +36,7 @@ class _ViewdetailsState extends State<Viewdetails> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ActiveStaffDetails(
-                      staffList: widget.staffList,
+                      activeStaff: widget.businessService.getStaffs(),
                     ),
                   ),
                 );
@@ -52,7 +54,9 @@ class _ViewdetailsState extends State<Viewdetails> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => DeleteStaffDetails(
-                            staffList: widget.removedStaffList)));
+                              deleteStaff:
+                                  widget.businessService.getRemovedStaffs(),
+                            )));
               },
               child: Text("View Deleted Staff Details"),
             ),
