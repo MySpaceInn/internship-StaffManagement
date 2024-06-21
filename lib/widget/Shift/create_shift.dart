@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/roster.dart';
 import 'package:flutter_application_1/model/shift.dart';
-import 'package:flutter_application_1/service/rostershift_service.dart';
+import 'package:flutter_application_1/service/roster_repo.dart';
 
 class CreateShift extends StatefulWidget {
-  final Roster roster;
-
-  const CreateShift({Key? key, required this.roster}) : super(key: key);
+final Function(Shift) addShift;
+  const CreateShift({super.key, required this.addShift});
 
   @override
   _CreateShiftState createState() => _CreateShiftState();
@@ -22,7 +20,7 @@ class _CreateShiftState extends State<CreateShift> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Shift's Detail"),
+        title:const Text("Shift's Detail"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -34,7 +32,7 @@ class _CreateShiftState extends State<CreateShift> {
               TextFormField(
                 decoration: InputDecoration(
                   labelText: "Enter StartTime",
-                  prefixIcon: Icon(Icons.time_to_leave),
+                  prefixIcon:const Icon(Icons.time_to_leave),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -49,11 +47,11 @@ class _CreateShiftState extends State<CreateShift> {
                   return null;
                 },
               ),
-              SizedBox(height: 15),
+             const SizedBox(height: 15),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: "Enter End Time",
-                  prefixIcon: Icon(Icons.time_to_leave),
+                  prefixIcon:const Icon(Icons.time_to_leave),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -68,9 +66,8 @@ class _CreateShiftState extends State<CreateShift> {
                   return null;
                 },
               ),
-              SizedBox(height: 15),
-             
-              SizedBox(height: 15),
+             const SizedBox(height: 15),
+             const SizedBox(height: 15),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.black,
@@ -78,20 +75,19 @@ class _CreateShiftState extends State<CreateShift> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    int newId = RosterService.getNextId();
+                    int newId = RosterRepo.getNextId();
                     Shift newShift = Shift(
                       startTime: startTime,
                       endTime: endTime,
-                     
                       id: newId,
                     );
-                    widget.roster.addShift(newShift);
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("Shift Created Successfully")));
+                    widget.addShift(newShift);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                       const SnackBar(content: Text("Shift Created Successfully")));
                     Navigator.pop(context, newShift);
                   }
                 },
-                child: Text("Submit"),
+                child:const Text("Submit"),
               ),
             ],
           ),

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/shift.dart';
 
 class UpdateShiftPage extends StatefulWidget {
-  final Shift shift;
   final Function(Shift) updateShift;
+  final Function(int) isShiftIdRegistered;
+  final Shift shift;
 
-  const UpdateShiftPage({Key? key, required this.shift, required this.updateShift})
-      : super(key: key);
+  const UpdateShiftPage({super.key, required this.shift, required this.updateShift, required this.isShiftIdRegistered, });
 
   @override
   State<UpdateShiftPage> createState() => _UpdateShiftPageState();
@@ -31,7 +31,7 @@ class _UpdateShiftPageState extends State<UpdateShiftPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Update Shift"),
+        title:const Text("Update Shift"),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10),
@@ -44,7 +44,7 @@ class _UpdateShiftPageState extends State<UpdateShiftPage> {
                   initialValue: _startTime,
                   decoration: InputDecoration(
                     labelText: "Enter New Start New",
-                    prefixIcon: Icon(Icons.date_range),
+                    prefixIcon:const Icon(Icons.date_range),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50),
                     ),
@@ -59,12 +59,12 @@ class _UpdateShiftPageState extends State<UpdateShiftPage> {
                     _startTime = value!;
                   },
                 ),
-                SizedBox(height: 10),
+               const SizedBox(height: 10),
                 TextFormField(
                   initialValue: _endTime,
                   decoration: InputDecoration(
                     labelText: "Enter  New End New",
-                    prefixIcon: Icon(Icons.date_range),
+                    prefixIcon:const Icon(Icons.date_range),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50),
                     ),
@@ -85,16 +85,17 @@ class _UpdateShiftPageState extends State<UpdateShiftPage> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      widget.updateShift(Shift(
+                      Shift updateShift=(Shift(
                         startTime: _startTime,
                         endTime: _endTime,
                        
                         id: widget.shift.id,
                       ));
+                      widget.updateShift(updateShift);
                       Navigator.pop(context);
                     }
                   },
-                  child: Text(
+                  child:const Text(
                     "Update",
                     style: TextStyle(color: Colors.black),
                   ),

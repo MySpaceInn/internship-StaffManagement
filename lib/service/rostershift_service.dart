@@ -1,40 +1,79 @@
 import 'package:flutter_application_1/model/roster.dart';
+import 'package:flutter_application_1/model/shift.dart';
+import 'package:flutter_application_1/service/roster_repo.dart';
 import 'package:flutter_application_1/widget/roster/roster_menu.dart';
 
 class RosterService {
-  List<Roster> rosters = [];
-  List<Roster> removeRosters = [];
-  static int _nextId =100;
-
-  static int getNextId(){
-    return _nextId++;
-  }
-  
-   getRosterHome() {
+  final RosterRepo rosterRepo = RosterRepo();
+  getRosterHome() {
     return RosterMenu(service: this);
   }
 
-  
-
- void removeRoster(int id) {
-    Roster? roster = rosters.firstWhere(
-      (roster) => roster.id == id,
-    );
-    if (roster != null) {
-      rosters.remove(roster);
-      removeRosters.add(roster);
-    }
+  //Roster
+  void addRoster(Roster roster) {
+    rosterRepo.addRoster(roster);
   }
 
-  void addRoster(Roster roster) {
-    rosters.add(roster);
+  getRemoveRoster(int id) {
+    rosterRepo.removeRoster(id);
+  }
+
+  getAllRomovedRoster() {
+    return rosterRepo.getremoveRoster();
   }
 
   void restoreRoster(Roster roster) {
-    removeRosters.remove(roster);
-    rosters.add(roster);
+    rosterRepo.restoreRoster(roster);
   }
-  
 
-  
+  List<Roster> getRoster() {
+    return rosterRepo.getAllRoster();
+  }
+
+  void updatedRoster(Roster roster) {
+    rosterRepo.updateRoster(roster);
+  }
+
+   bool isIdRegistered(int id) {
+    return rosterRepo.isIdRegistered(id);
+  }
+
+  bool isShiftIdRegistered(int id) {
+    return rosterRepo.isShiftIdRegistered(id);
+  }
+
+//Shift
+
+
+  getAllShift() {
+    return rosterRepo.getShift();
+  }
+  getRemovedShift(){
+    return rosterRepo.getAllDeletedShift();
+  }
+
+  void addShiftList(Shift shift) {
+    rosterRepo.addShift(shift);
+  }
+
+  void removeShift(int id) {
+    rosterRepo.removeShift(id);
+  }
+
+  void restoreShift(Shift shift) {
+    rosterRepo.restoreShift(shift);
+  }
+
+  void updatedShift(Shift shift) {
+    rosterRepo.updateShift(shift);
+  }
+
+Roster? getRemovedRosterById(int id) {
+    return rosterRepo.getRosterById(id);
+  }
+
+  Shift? getRemovedShiftById(int id) {
+    return rosterRepo.getShiftById(id);
+  }
+
 }

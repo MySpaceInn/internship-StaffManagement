@@ -1,46 +1,45 @@
-
-
-  import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/roster.dart';
 
-  // ignore: must_be_immutable
-  class UpdatepageRoster extends StatefulWidget {
-   final Roster roster;
-   final Function(Roster) updateRoster;
+class UpdatepageRoster extends StatefulWidget {
+  final Function(Roster) updatedRoster;
+  final Function(int) isIdRegistered;
+  final Roster roster;
 
-     const UpdatepageRoster (
-        {super.key, required this.roster, required this.updateRoster, });
+  const UpdatepageRoster({
+    super.key,
+    required this.roster,
+    required this.updatedRoster,
+    required this.isIdRegistered,
+  });
 
-    @override
-    State<UpdatepageRoster> createState() => _UpdatePageState();
-  }
+  @override
+  State<UpdatepageRoster> createState() => _UpdatePageState();
+}
 
-  class _UpdatePageState extends State<UpdatepageRoster> {
-      final _formKey = GlobalKey<FormState>();
-    late String _creatorName;
-   late String _createdYear;
+class _UpdatePageState extends State<UpdatepageRoster> {
+  final _formKey = GlobalKey<FormState>();
+  late String _creatorName;
+  late String _createdYear;
 
-    late String _startedDate;
-    late String _endDate;
+  late String _startedDate;
+  late String _endDate;
 
-
-
-    @override
-    void initState() {
+  @override
+  void initState() {
     super.initState();
     _creatorName = widget.roster.creatorName;
     _createdYear = widget.roster.createdYear;
     _startedDate = widget.roster.startDate;
     _endDate = widget.roster.endDate;
-    }
-  
+  }
 
-    @override
-     Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Edit Roster Details"),
+        title: const Text("Edit Roster Details"),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10),
@@ -54,18 +53,18 @@ import 'package:flutter_application_1/model/roster.dart';
                   readOnly: true,
                   decoration: InputDecoration(
                     labelText: "Business ID",
-                    prefixIcon: Icon(Icons.numbers),
+                    prefixIcon: const Icon(Icons.numbers),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50),
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 TextFormField(
                   initialValue: _creatorName,
                   decoration: InputDecoration(
                     labelText: "Enter Creator New Name",
-                    prefixIcon: Icon(Icons.person),
+                    prefixIcon: const Icon(Icons.person),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50),
                     ),
@@ -80,12 +79,12 @@ import 'package:flutter_application_1/model/roster.dart';
                     _creatorName = value!;
                   },
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 TextFormField(
                   initialValue: _createdYear,
                   decoration: InputDecoration(
                     labelText: "Enter New Created Year",
-                    prefixIcon: Icon(Icons.date_range),
+                    prefixIcon: const Icon(Icons.date_range),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50),
                     ),
@@ -100,12 +99,12 @@ import 'package:flutter_application_1/model/roster.dart';
                     _createdYear = value!;
                   },
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 TextFormField(
                   initialValue: _startedDate,
                   decoration: InputDecoration(
                     labelText: "Enter Roster Started Year",
-                    prefixIcon: Icon(Icons.date_range),
+                    prefixIcon: const Icon(Icons.date_range),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50),
                     ),
@@ -120,12 +119,12 @@ import 'package:flutter_application_1/model/roster.dart';
                     _startedDate = value!;
                   },
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 TextFormField(
                   initialValue: _endDate,
                   decoration: InputDecoration(
                     labelText: "Enter Business End Date",
-                    prefixIcon: Icon(Icons.date_range),
+                    prefixIcon: const Icon(Icons.date_range),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50),
                     ),
@@ -140,40 +139,34 @@ import 'package:flutter_application_1/model/roster.dart';
                     _endDate = value!;
                   },
                 ),
-                SizedBox(height: 10),
-            
-                
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
+                const SizedBox(height: 10),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.cyan),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      widget.updateRoster(
-                        Roster(
-                          creatorName: _creatorName,
-                          id: widget.roster.id,
-                          createdYear: _createdYear,
-                          startDate: _startedDate,
-                          endDate: _endDate,
-                        
-                        ),
+                      Roster updateRoster = Roster(
+                        creatorName: _creatorName,
+                        id: widget.roster.id,
+                        createdYear: _createdYear,
+                        startDate: _startedDate,
+                        endDate: _endDate,
                       );
+                      widget.updatedRoster(updateRoster);
                       Navigator.pop(context);
                     }
                   },
-                  child: Text(
+                  child: const Text(
                     "Update",
                     style: TextStyle(color: Colors.black),
                   ),
                 ),
-            ],
+              ],
             ),
           ),
+        ),
       ),
-    ),
     );
-     }
-     }
-      
-     
+  }
+}

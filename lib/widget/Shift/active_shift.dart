@@ -2,28 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/shift.dart';
 
 class ActiveShift extends StatelessWidget {
-  final List<Shift> shifts;
-
-  const ActiveShift({super.key, required this.shifts});
+  final List<Shift> activeShift;
+  const ActiveShift({super.key, required this.activeShift});
 
   @override
   Widget build(BuildContext context) {
+    int activeShiftNumber = activeShift.length;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Active Shift Details'),
+        title: const Text('Active Shift Details'),
       ),
       body: Center(
-        child: shifts.isEmpty
-            ? Text('There are no active shift details!')
+        child: activeShift.isEmpty
+            ? const Text('There are no active shift details!')
             : ListView.builder(
-                itemCount: shifts.length,
+                itemCount: activeShiftNumber,
                 itemBuilder: (context, index) {
+                  Shift item = activeShift[index];
                   return ListTile(
-                   
-                    title: Text(
-                        '''ID: ${shifts[index].id}
-                        Start Time: ${shifts[index].startTime},
-                         End Time: ${shifts[index].endTime}'''),
+                    title: Text('''ID: ${item.id}
+                        Start Time: ${item.startTime},
+                         End Time: ${item.endTime}'''),
                   );
                 },
               ),

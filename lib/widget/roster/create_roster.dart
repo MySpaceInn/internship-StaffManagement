@@ -1,17 +1,16 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/roster.dart';
-import 'package:flutter_application_1/service/rostershift_service.dart';
+import 'package:flutter_application_1/service/roster_repo.dart';
 
 class CreateRoster extends StatefulWidget {
-    final RosterService service;
-  const CreateRoster({Key? key, required this.service})
-      : super(key: key);
+
+final Function(Roster) addRoster; 
+  const CreateRoster({super.key, required this.addRoster});
 
   @override
   State<CreateRoster> createState() => _CreateRosterState();
 }
+
 class _CreateRosterState extends State<CreateRoster> {
   final _formKey = GlobalKey<FormState>();
   String creatorName = '';
@@ -24,7 +23,7 @@ class _CreateRosterState extends State<CreateRoster> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Roster Detail"),
+        title: const Text("Roster Detail"),
       ),
       body: Container(
         padding: const EdgeInsets.all(16.0),
@@ -36,7 +35,7 @@ class _CreateRosterState extends State<CreateRoster> {
               TextFormField(
                 decoration: InputDecoration(
                   labelText: "Enter Creator Name",
-                  prefixIcon: Icon(Icons.person),
+                  prefixIcon: const Icon(Icons.person),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -51,11 +50,11 @@ class _CreateRosterState extends State<CreateRoster> {
                   return null;
                 },
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: "Enter Created Year",
-                  prefixIcon: Icon(Icons.date_range),
+                  prefixIcon: const Icon(Icons.date_range),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -70,11 +69,11 @@ class _CreateRosterState extends State<CreateRoster> {
                   return null;
                 },
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: "Enter Started Date",
-                  prefixIcon: Icon(Icons.date_range),
+                  labelText: "Enter Started Year",
+                  prefixIcon: const Icon(Icons.date_range),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -85,16 +84,16 @@ class _CreateRosterState extends State<CreateRoster> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter Started Date';
+                    return 'Please enter Started Year';
                   }
                   return null;
                 },
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: "Enter End Year",
-                  prefixIcon: Icon(Icons.date_range),
+                  prefixIcon: const Icon(Icons.date_range),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -109,9 +108,8 @@ class _CreateRosterState extends State<CreateRoster> {
                   return null;
                 },
               ),
-              SizedBox(height: 15),
-              
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
+              const SizedBox(height: 15),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.black,
@@ -119,7 +117,7 @@ class _CreateRosterState extends State<CreateRoster> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    int newId = RosterService.getNextId();
+                    int newId = RosterRepo.getNextId();
                     Roster newRoster = Roster(
                       creatorName: creatorName,
                       createdYear: createdYear,
@@ -127,13 +125,13 @@ class _CreateRosterState extends State<CreateRoster> {
                       endDate: endDate,
                       id: newId,
                     );
-                    widget.service.addRoster(newRoster);
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    widget.addRoster(newRoster);
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text("Roster Created Successfully")));
                     Navigator.pop(context, newRoster);
                   }
                 },
-                child: Text("Submit"),
+                child: const Text("Submit"),
               ),
             ],
           ),

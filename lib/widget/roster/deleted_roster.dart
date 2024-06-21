@@ -3,26 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/roster.dart';
 
 class DeletedRoster extends StatelessWidget {
-  const DeletedRoster({super.key, required this.rosters});
-  final List<Roster> rosters;
-
+  const DeletedRoster({super.key, required this.removeRoster});
+final List<Roster> removeRoster;
   @override
   Widget build(BuildContext context) {
+    int deletedRosterNumber = removeRoster.length;
+
     return Scaffold(
     appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text('Deleted Roster Details'),
+        title:const Text('Deleted Roster Details'),
       ),
       body: Center(
-        child: rosters.isEmpty
-            ? Text('There are no deleted Roster details!')
+        child: removeRoster.isEmpty
+            ? const Text('There are no deleted Roster details!')
             : ListView.builder(
-                itemCount: rosters.length,
+                itemCount: deletedRosterNumber,
                 itemBuilder: (context, index) {
+                  Roster item =removeRoster[index];
                   return ListTile(
-                    title: Text(rosters[index].creatorName),
+                    title: Text( item.creatorName),
                     subtitle: Text(
-                        'ID: ${rosters[index].id} Created Year: ${rosters[index].createdYear}, Start Year: ${rosters[index].startDate}, End Date: ${rosters[index].endDate}'),
+                        ''''ID: ${item.id}
+                         Created Year: ${item.createdYear}, 
+                         Start Year: ${item.startDate},
+                          End Date: ${item.endDate}'''),
                   );
                 },
               ),

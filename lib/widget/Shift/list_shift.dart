@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/shift.dart';
+import 'package:flutter_application_1/service/rostershift_service.dart';
+import 'package:flutter_application_1/widget/Shift/deleted_shift.dart';
 import 'package:flutter_application_1/widget/shift/active_shift.dart';
-import 'package:flutter_application_1/widget/shift/deleted_shift.dart';
 
 class Viewdetails extends StatefulWidget {
-  final List<Shift> shifts;
-  final List<Shift> removeshifts;
+  final RosterService service;
 
-  const Viewdetails(
-      {super.key, required this.shifts, required this.removeshifts});
+  const Viewdetails({super.key, required this.service});
 
   @override
   State<Viewdetails> createState() => _ViewdetailsState();
@@ -19,12 +17,15 @@ class _ViewdetailsState extends State<Viewdetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("View Shift"),
+        title: const Text("View Shift"),
         backgroundColor: Colors.cyan,
       ),
       body: Center(
         child: Column(
           children: [
+            const SizedBox(
+              height: 10,
+            ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.cyan, foregroundColor: Colors.black),
@@ -33,14 +34,14 @@ class _ViewdetailsState extends State<Viewdetails> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ActiveShift(
-                      shifts: widget.shifts,
+                      activeShift: widget.service.getAllShift(),
                     ),
                   ),
                 );
               },
-              child: Text("View Active Shift Details"),
+              child: const Text("View Active Shift Details"),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             ElevatedButton(
@@ -50,10 +51,10 @@ class _ViewdetailsState extends State<Viewdetails> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Deletedshift(
-                            shifts: widget.removeshifts)));
+                        builder: (context) => DeletedShift(
+                            removedShift: widget.service.getRemovedShift())));
               },
-              child: Text("View Deleted Shift Details"),
+              child: const Text("View Deleted Shift Details"),
             ),
           ],
         ),

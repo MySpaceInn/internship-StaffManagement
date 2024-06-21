@@ -1,26 +1,25 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/roster.dart';
+import 'package:flutter_application_1/service/rostershift_service.dart';
 import 'package:flutter_application_1/widget/roster/active_roster.dart';
 import 'package:flutter_application_1/widget/roster/deleted_roster.dart';
 
-// ignore: must_be_immutable
 class ListRoster extends StatefulWidget {
-  ListRoster({super.key, required this.Service});
-  final Service;
-  List<Roster> roster = [];
+  const ListRoster({super.key,  required this.service});
+  final RosterService service;
+  
 
   @override
-  State<ListRoster> createState() => _listShiftState();
+  State<ListRoster> createState() => _listRosterState();
 }
 
-class _listShiftState extends State<ListRoster> {
+class _listRosterState extends State<ListRoster> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text(
+        title:const Text(
           "Roster",
           style: TextStyle(fontSize: 25),
         ),
@@ -28,7 +27,7 @@ class _listShiftState extends State<ListRoster> {
       body: Center(
         child: Column(
           children: [
-            SizedBox(
+          const  SizedBox(
               height: 20,
             ),
             ElevatedButton(
@@ -37,19 +36,19 @@ class _listShiftState extends State<ListRoster> {
                   backgroundColor: Colors.cyanAccent,
                   shadowColor: Colors.black,
                   elevation: 5,
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  textStyle: TextStyle(fontSize: 20),
+                  padding:const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  textStyle:const TextStyle(fontSize: 20),
                 ),
                 onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            ActiveRoster(service: widget.Service),
+                            ActiveRoster(service: widget.service,getRoster: widget.service.getRoster(),),
                       ));
                 },
-                child: Text("Active Roster")),
-            SizedBox(
+                child:const Text("Active Roster")),
+          const  SizedBox(
               height: 20,
             ),
             ElevatedButton(
@@ -58,18 +57,18 @@ class _listShiftState extends State<ListRoster> {
                   backgroundColor: Colors.cyanAccent,
                   shadowColor: Colors.black,
                   elevation: 5,
-                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  textStyle: TextStyle(fontSize: 20),
+                  padding:const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  textStyle:const TextStyle(fontSize: 20),
                 ),
                 onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            DeletedRoster(rosters: widget.Service.removeRosters),
+                            DeletedRoster(removeRoster: widget.service.getAllRomovedRoster(),),
                       ));
                 },
-                child: Text("Deleted Roster")),
+                child:const Text("Deleted Roster")),
           ],
         ),
       ),

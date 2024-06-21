@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/roster.dart';
-import 'package:flutter_application_1/widget/shift/deleted_shift.dart';
+import 'package:flutter_application_1/widget/Shift/deleted_shift.dart';
 
 class DeleteShift extends StatefulWidget {
-  final Roster roster;
-
+  final Function(int) removeShift;
+  final bool Function(int) isShiftIdRegistered;
   const DeleteShift({
     super.key,
-    required this.roster,
+    required this.removeShift,
+    required this.isShiftIdRegistered,
   });
 
   @override
@@ -23,7 +23,7 @@ class _DeleteShiftState extends State<DeleteShift> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Delete Shift"),
+        title: const Text("Delete Shift"),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10),
@@ -33,7 +33,7 @@ class _DeleteShiftState extends State<DeleteShift> {
             children: [
               TextFormField(
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.numbers),
+                  prefixIcon: const Icon(Icons.numbers),
                   labelText: "Enter ID Number To Delete",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
@@ -53,32 +53,32 @@ class _DeleteShiftState extends State<DeleteShift> {
                   _id = int.parse(value!);
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.cyan),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    if (_id != null && _isidRegistered(_id!)) {
-                      widget.roster.removeShift(_id!);
-                      Navigator.pop(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Deletedshift(
-                            shifts: widget.roster.removeshifts,
-                          ),
-                        ),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Deleted Successfully")));
+                    if (_id != null && widget.isShiftIdRegistered(_id!)) {
+                      widget.removeShift(_id!);
+                      // Navigator.pop(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => DeletedShift(
+                      //       removedShift: widget.removeShift(),
+                      //     ),
+                      //   ),
+                      // );
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text("Deleted Successfully")));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Invalid ID number')),
+                        const SnackBar(content: Text('Invalid ID number')),
                       );
                     }
                   }
                 },
-                child: Text(
+                child: const Text(
                   "Delete",
                   style: TextStyle(color: Colors.black),
                 ),
@@ -88,9 +88,5 @@ class _DeleteShiftState extends State<DeleteShift> {
         ),
       ),
     );
-  }
-
-  bool _isidRegistered(int id) {
-    return widget.roster.shifts.any((shift) => shift.id == id);
   }
 }

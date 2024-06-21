@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/model/roster.dart';
 import 'package:flutter_application_1/model/shift.dart';
+import 'package:flutter_application_1/service/rostershift_service.dart';
 import 'package:flutter_application_1/widget/Shift/update_page.dart';
 
 class UpdateShift extends StatefulWidget {
-  final Roster roster;
-
-  const UpdateShift({super.key, required this.roster});
+final RosterService service;
+  const UpdateShift({super.key, required this.service});
 
   @override
   State<UpdateShift> createState() => _UpdateShiftState();
@@ -21,7 +20,7 @@ class _UpdateShiftState extends State<UpdateShift> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan,
-        title: Text("Update Shift"),
+        title:const Text("Update Shift"),
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 10),
@@ -32,7 +31,7 @@ class _UpdateShiftState extends State<UpdateShift> {
               TextFormField(
                 decoration: InputDecoration(
                   labelText: "Enter ID Number",
-                  prefixIcon: Icon(Icons.attach_money),
+                  prefixIcon:const Icon(Icons.attach_money),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
@@ -51,7 +50,7 @@ class _UpdateShiftState extends State<UpdateShift> {
                   _id = int.parse(value!);
                 },
               ),
-              SizedBox(height: 20),
+             const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.cyan,
@@ -60,26 +59,26 @@ class _UpdateShiftState extends State<UpdateShift> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    if (_id != null && _isidRegistered(_id!)) {
-                      Shift shift = widget.roster.shifts
+                    if (_id != null && widget.service.isShiftIdRegistered(_id!)) {
+                      Shift shift = widget.service.rosterRepo.shifts
                           .firstWhere((shift) => shift.id == _id);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => UpdateShiftPage(
-                            shift: shift,
-                            updateShift: _updateShift,
+                            updateShift: widget.service.updatedShift,
+                            shift: shift, isShiftIdRegistered: widget.service.isShiftIdRegistered,
                           ),
                         ),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Invalid id number')),
+                       const SnackBar(content: Text('Invalid id number')),
                       );
                     }
                   }
                 },
-                child: Text(
+                child:const Text(
                   "Submit",
                   style: TextStyle(color: Colors.black),
                 ),
@@ -91,17 +90,5 @@ class _UpdateShiftState extends State<UpdateShift> {
     );
   }
 
-  bool _isidRegistered(int id) {
-    return widget.roster.shifts.any((shift) => shift.id == id);
-  }
-
-  void _updateShift(Shift updatedShift) {
-    setState(() {
-      int index = widget.roster.shifts
-          .indexWhere((shift) => shift.id == updatedShift.id);
-      if (index != -1) {
-        widget.roster.shifts[index] = updatedShift;
-      }
-    });
-  }
+ 
 }
